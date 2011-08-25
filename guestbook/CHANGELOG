@@ -1,0 +1,48 @@
+0.1:
+- initial release
+
+0.2:
+- added switchable spamprotection
+- fixed some bugs
+- css beautification
+
+0.3
+- added e-mail javascript encryption
+- small fix for homepage link: validity check for http://
+
+0.9
+large versioning increase because of the major changes
+- added comment function for entries
+- loads of ajax gimmicks
+- refactoring
+- bugfixes
+
+0.92
+- some bugfixes for display
+
+1.0
+- some input/output fixes for form fields (xss)
+- language file additions
+- removed SS2.3 support
+- added e-mail field and internal mail address check
+- general cleanup
+
+1.0.1
+maintenance release
+- added new spam protection from current trunk
+- fixed filters
+
+1.0.2
+maintenance release
+- small fixes
+- added mail on new submission
+
+1.0.3
+maintenance release
+- small fix for spamming with enabled ReCaptcha -> Custom domain filter
+
+1.0.4
+maintenance release
+- added PHPCaptcha
+- added URL fixes
+Thanks to s!m for the improvements
