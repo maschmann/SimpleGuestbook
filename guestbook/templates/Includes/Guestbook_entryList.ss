@@ -1,7 +1,7 @@
 		<% control EntryList %>
 			<li class="$EvenOdd $FirstLast">
 				<% if Title %><h3><a href="$Link" title="$Title.XML">$Title.XML</a></h3><% end_if %>
-				<p>$Comment.XML</p>
+				<p>$Comment</p>
 				<p class="smallText name">
 				<% if Top.EncryptEmail %>
 					<% _t('Guestbook.ss.FROM', 'from') %> $MailLink

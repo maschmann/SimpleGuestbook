@@ -35,7 +35,7 @@ class GuestbookEntry extends DataObject
 		'LastName'	=> 'Varchar(50)',	// poster's last name
 		'Email'		=> 'Varchar(255)',	// poster's mail address
 		'Title'		=> 'Varchar(255)',	// title for the entry
-		'Comment'	=> 'Text',			// the actual entry
+		'Comment'	=> 'HTMLText',			// the actual entry
 		'Url'		=> 'Varchar(255)',	// an URL set by the poster
 		'IsSpam'	=> 'Boolean',		// spamflag
 		'IsActive'	=> 'Boolean',		// if set active
@@ -217,6 +217,7 @@ class GuestbookEntry extends DataObject
 
 				if( true == $arrParam[ 'emoticons' ] )
 				{
+					#BBCodeParser::enable_smilies();
 					$entry[ 'Comment' ] = Guestbook::getReplaceEmoticons( $entry[ 'Comment' ] );
 				}
 

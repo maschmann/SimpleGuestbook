@@ -285,7 +285,7 @@ class Guestbook extends Page
 		$arrResult = array();
 		foreach( $arrEmoticons as $strKey => $strValue)
 		{
-			$arrResult[ $strKey ] = "<img src=\"../img/emoticons/" . $strValue . ".gif\" alt=\"" . $strValue . "\" class=\"emoticon\"/>";
+			$arrResult[ $strKey ] = "<img src=\"guestbook/img/emoticons/" . $strValue . ".gif\" alt=\"" . $strValue . "\" class=\"emoticon\"/>";
 		}
 
 		self::$arrEmoticons = $arrResult;
@@ -317,7 +317,6 @@ class Guestbook extends Page
 		/**
 		 * replace all emoticons with the appropriate images
 		 */
-
 		$strEntry = str_replace( array_keys( $arrEmoticons ), array_values( $arrEmoticons ), $strEntry );
 		#Debug::dump($strEntry);
 
@@ -325,7 +324,7 @@ class Guestbook extends Page
 	}
 
 	/**
-	 * simple method do mask eMail addresses
+	 * simple method to mask eMail addresses
 	 *
 	 * source web site: http://www.pgregg.com/projects/
 	 * You must also make this original source code available for download
