@@ -139,5 +139,19 @@ class GuestbookEntryComment extends DataObject
 			$sqlQuery->execute();
 		}
 	}
+	
+	/**
+   * Checks, if the current user has the permission $perm, used in templates
+   * @param string $perm
+   * @return bool
+   */
+  public function checkPermission($perm)
+  {
+    if(Permission::check($perm) != false)
+    {
+      return true;
+    }
+    return false;
+  }
 
 }

@@ -15,6 +15,12 @@ class GuestbookEntry extends DataObject
 {
 
 	/**
+	 * indicates, if this is a new (not already existent in database) object
+	 * @var bool
+	 */
+	private $new = false;
+
+	/**
 	 * name of the object in singular
 	 * @var string
 	 */
@@ -128,6 +134,11 @@ class GuestbookEntry extends DataObject
 		{
 			$this->AuthorID = $currentMember->ID;
 		}
+		
+		if(!$this->getField('ID'))
+        {
+            $this->new = true;
+        }
 
 		parent::onBeforeWrite();
 	}
@@ -140,21 +151,34 @@ class GuestbookEntry extends DataObject
 	 */
 	public function onAfterWrite()
 	{
-		if( isset( $this->Guestbook()->ReceiverMailAddress )
-				&& '' != $this->Guestbook()->ReceiverMailAddress )
-		{
-			$strFrom	= 'guestbook@' . $_SERVER[ 'HTTP_HOST' ];
-			$strTo		= $this->Guestbook()->ReceiverMailAddress;
-			$strSubject	= _t( 'GuestbookEntry.MAILSUBJECT' , 'New guestbook entry :-)');
-			$strBody	= _t( 'GuestbookEntry.MAILBODY' , 'You received a new guestbook entry on http://' . $_SERVER[ 'HTTP_HOST' ] . '!')
-						. _t( 'GuestbookEntry.MAILBODYNAME' , 'Name: ' . $this->Guestbook()->FirstName . ' ' . $this->Guestbook()->LastName)
-						. _t( 'GuestbookEntry.MAILBODYTEXT' , 'Text: ' . $this->Guestbook()->Comment)
-						. _t( 'GuestbookEntry.MAILBODYLINK' , 'Link: ' . $this->Link());
+		if(isset($this->Guestbook()->ReceiverMailAddress)
+           && isset($this->Guestbook()->ReceiverMailAddress)
+           && $this->Guestbook()->ReceiverMailAddress != ''
+           && $this->Guestbook()->ReceiverMailAddress != ''
+           && $this->new
+        )
+        {
+            $strFrom = $this->Guestbook()->ReceiverMailAddress;
+            $strTo = $this->Guestbook()->ReceiverMailAddress;
+            $strSubject = _t('GuestbookEntry.MAILSUBJECT', 'New guestbook entry :-)');
+            $strBody = sprintf(_t('GuestbookEntry.MAILBODY',
+                                  'You received a new guestbook entry on %s!'),
+                               Director::absoluteBaseURL());
+            $strBody .= "\n";
+            $strBody .= sprintf(_t('GuestbookEntry.MAILBODYNAME',
+                                   'Name: %s %s'), $this->getField('FirstName'),
+                                $this->getField('LastName'));
+            $strBody .= "\n";
+            $strBody .= sprintf(_t('GuestbookEntry.MAILBODYTEXT', 'Text: %s'),
+                                $this->getField('Comment'));
+            $strBody .= "\n";
+            $strBody .= sprintf(_t('GuestbookEntry.MAILBODYLINK', 'Link: %s'),
+                                Director::absoluteURL($this->Link()));
 
-			$objEmail = new Email( $strFrom, $strTo, $strSubject, $strBody );
-			$objEmail->sendPlain();
+            $objEmail = new Email($strFrom, $strTo, $strSubject, $strBody);
+            $objEmail->sendPlain();
 
-		}
+        }
 
 		parent::onAfterWrite();
 	}
@@ -269,8 +293,17 @@ class GuestbookEntry extends DataObject
 	 */
 	public function Link()
 	{
-		return $this->Guestbook()->Link() . _t( 'GuestbookEntry.LINKTEXT', '#Entry' ) . $this->ID;
+		return $this->Guestbook()->Link() . "#" . _t( 'GuestbookEntry.LINKTEXT', 'Entry' ) . $this->ID;
 	}
+
+    /**
+     * generates the id of this entry, used in templates
+     * @return string
+     */
+    public function LinkId()
+    {
+        return _t('GuestbookEntry.LINKTEXT', 'Entry') . $this->ID;
+    }
 
 	/*
 	 * rights management
@@ -333,6 +366,20 @@ class GuestbookEntry extends DataObject
 	{
 		return $this->canEdit( $member );
 	}
+	
+    /**
+     * Checks, if the current user has the permission $perm, used in templates
+     * @param string $perm
+     * @return bool
+     */
+    public function checkPermission($perm)
+    {
+        if(Permission::check($perm) != false)
+        {
+            return true;
+        }
+        return false;
+    }
 
 }
 ?>
