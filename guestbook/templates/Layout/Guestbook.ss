@@ -12,6 +12,9 @@ d;c=f[f.length]=[a,c];a.parentNode.replaceChild(c[1],c[0])}t(e.styleSheets,"all"
 	<h2>$Title</h2>
 	$Content
 	$Form
+	<a href="{$Link}doAction?do=showSmilies" title="<% _t('Guestbook.ss.SHOWSMILIESCODE', 'emoticon map') %>" class="popForm">
+		<% _t('Guestbook.ss.SHOWSMILIESCODE', 'emoticon map') %>
+	</a>
 	<span id="FormMessage"><!-- shows form messages/errors --></span>
 	<% if EntryList %>
 		<ol id="entryList">

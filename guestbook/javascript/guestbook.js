@@ -3,8 +3,6 @@
  *
  * @author Marc Aschmann <marc (at) aschmann.org>
  * @package guestbook
- * $Id: guestbook.js 57 2010-03-26 18:16:42Z maschmann $
- *
  */
 
 jQuery.noConflict();
@@ -13,8 +11,8 @@ jQuery( document ).ready( function()
 {
 	try
 	{
-		var dlg = jQuery( '#popForm' ).dialog( {
-			title: 'add comment',
+		var objDialog = jQuery( '#popForm' ).dialog( {
+			//title: 'add comment',
 			//height: 318,
 			width: 350,
 			modal: true,
@@ -23,9 +21,9 @@ jQuery( document ).ready( function()
 		});
 
 		jQuery( 'a.popForm' ).click( function(){
-			//dlg.html = '';
-			dlg.load( jQuery( this ).attr( 'href' ) );
-			dlg.dialog( 'open' );
+			objDialog.dialog( 'option', 'title', jQuery( this ).attr( 'title' ) );
+			objDialog.load( jQuery( this ).attr( 'href' ) );
+			objDialog.dialog( 'open' );
 			return false;
 		});
 

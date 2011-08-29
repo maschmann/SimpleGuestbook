@@ -298,7 +298,7 @@ class Guestbook extends Page
 	 * get defined emoticon array
 	 * @return type array
 	 */
-	private static function getEmoticons()
+	public static function getEmoticons()
 	{
 		return self::$arrEmoticons;
 	}
@@ -758,10 +758,23 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 				if( Permission::check('GUESTBOOK_ADDCOMMENT') != false )
 				{
 					$retVal = $this->customise( array(
-#						'EntryID' => Director::urlParam( 'ID' ),
 						'EntryID' => Controller::curr()->urlParams['ID'],
 					) )->renderWith( 'Guestbook_addComment' );
 				}
+				break;
+			case 'showSmilies':
+				// rearrange smilies array for template
+				foreach( Guestbook::getEmoticons()  as $strKey => $strValue )
+				{
+					$arrSmilies[] = array( 
+						'Img'	=> $strValue,
+						'Code'	=> $strKey,
+					);
+				}
+
+				$retVal = $this->customise( array(
+					'smiliesMap' => new DataObjectSet( $arrSmilies ),
+				) )->renderWith( 'Guestbook_showSmilies' );
 				break;
 			case 'spam':
 			case 'activate':
