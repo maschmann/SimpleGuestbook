@@ -10,9 +10,9 @@
 							<p class="smallText name"><% _t('Guestbook.ss.FROM', 'from') %> $FirstName.XML<% if Top.ShowLastNameInEntries %> $Surname.XML<% end_if %> / $Created.format( Y-m-d H:m )</p>
 							<% if Top.CurrentUser %>
 							<p class="smallText entryTools">
-								<% if Top.isAdmin %>
-								<a class="delete" href="{$Top.Link}doAction/$ID?do=deleteComment" title="<% _t('Guestbook.ss.DELCOMMENT', 'delete comment') %>">&nbsp;</a>
-								<% end_if %>
+			          <% if checkPermission(GUESTBOOK_DELETECOMMENT) %>
+						      <a class="delete" href="{$Top.Link}doAction/$ID?do=deleteComment" title="<% _t('Guestbook.ss.DELCOMMENT', 'delete comment') %>">&nbsp;</a>
+						    <% end_if %>
 							</p>
 							<br class="clear" />
 							<% end_if %>

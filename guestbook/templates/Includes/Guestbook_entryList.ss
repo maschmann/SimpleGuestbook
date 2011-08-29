@@ -1,6 +1,6 @@
 		<% control EntryList %>
 			<li class="$EvenOdd $FirstLast">
-				<% if Title %><h3><a href="$Link" title="$Title.XML">$Title.XML</a></h3><% end_if %>
+				<% if Title %><h3><a href="$Link" title="$Title.XML" id="$LinkId">$Title.XML</a></h3><% end_if %>
 				<p>$Comment</p>
 				<p class="smallText name">
 				<% if Top.EncryptEmail %>
@@ -16,12 +16,16 @@
 				</p>
 				<% if Top.CurrentUser %>
 				<p class="smallText entryTools">
-					<% if Top.isAdmin %>
-					<a class="spam" href="{$Top.Link}doAction/$ID?do=spam" title="<% _t('Guestbook.ss.ENTRYISSPAM', 'entry is spam') %>">&nbsp;</a>
-					<a class="delete" href="{$Top.Link}doAction/$ID?do=deleteEntry" title="<% _t('Guestbook.ss.DELENTRY', 'delete entry') %>">&nbsp;</a>
+					<% if checkPermission(GUESTBOOK_CHANGECOMMENTSTATE) %>
+					    <a class="spam" href="{$Top.Link}doAction/$ID?do=spam" title="<% _t('Guestbook.ss.ENTRYISSPAM', 'entry is spam') %>">&nbsp;</a>
+                    <% end_if %>
+					<% if checkPermission(GUESTBOOK_DELETEENTRY) %>
+					    <a class="delete" href="{$Top.Link}doAction/$ID?do=deleteEntry" title="<% _t('Guestbook.ss.DELENTRY', 'delete entry') %>">&nbsp;</a>
 					<% end_if %>
 					<% if Top.EntryComments %>
-					<a href="{$Top.Link}doAction/$ID?do=addComment" class="comment popForm" title="<% _t('Guestbook.ss.NEWCOMMENT', 'add comment') %>">&nbsp;</a>
+                        <% if checkPermission(GUESTBOOK_ADDCOMMENT) %>
+					        <a href="{$Top.Link}doAction/$ID?do=addComment" class="comment popForm" title="<% _t('Guestbook.ss.NEWCOMMENT', 'add comment') %>">&nbsp;</a>
+                        <% end_if %>
 					<% end_if %>
 				</p>
 				<% end_if %>
