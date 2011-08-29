@@ -193,17 +193,17 @@
 
 	#guestbook .delete
 	{
-		background: transparent url( ../img/guestbook_sprite ) no-repeat 0 -80px;
+		background: transparent url(../img/guestbook_sprite.png ) no-repeat 0 -80px;
 	}
 
 	#guestbook .comment
 	{
-		background: transparent url( ../img/guestbook_sprite ) no-repeat 0 -96px;
+		background: transparent url(../img/guestbook_sprite.png ) no-repeat 0 -96px;
 	}
 
 	#guestbook .spam
 	{
-		background: transparent url( ../img/guestbook_sprite ) no-repeat 0 -64px;
+		background: transparent url(../img/guestbook_sprite.png ) no-repeat 0 -64px;
 	}
 
 	#guestbook .entryTools
