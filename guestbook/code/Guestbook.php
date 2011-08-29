@@ -295,7 +295,7 @@ class Guestbook extends Page
 	 * get defined emoticon array
 	 * @return type array
 	 */
-	public static function getEmoticons()
+	private static function getEmoticons()
 	{
 		return self::$arrEmoticons;
 	}
@@ -312,13 +312,15 @@ class Guestbook extends Page
 		 * get configured emoticons
 		 */
 		$arrEmoticons = Guestbook::getEmoticons();
-		#Debug::dump(array_values( $arrEmoticons ));
-		#Debug::dump(array_keys( $arrEmoticons ));
+
 		/**
 		 * replace all emoticons with the appropriate images
 		 */
-		$strEntry = str_replace( array_keys( $arrEmoticons ), array_values( $arrEmoticons ), $strEntry );
-		#Debug::dump($strEntry);
+		$strEntry = str_replace(
+			array_keys( $arrEmoticons ),
+			array_values( $arrEmoticons ),
+			$strEntry
+		);
 
 		return $strEntry;
 	}
