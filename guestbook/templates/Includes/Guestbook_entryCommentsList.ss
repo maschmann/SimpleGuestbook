@@ -6,7 +6,7 @@
 						<% control EntryCommentList %>
 						<li  class="$EvenOdd $FirstLast">
 							<h5>$Title.XML</h5>
-							<p>$Comment.XML</p>
+							<p>$Comment</p>
 							<p class="smallText name"><% _t('Guestbook.ss.FROM', 'from') %> $FirstName.XML<% if Top.ShowLastNameInEntries %> $Surname.XML<% end_if %> / $Created.format( Y-m-d H:m )</p>
 							<% if Top.CurrentUser %>
 							<p class="smallText entryTools">

@@ -138,7 +138,6 @@ class GuestbookEntry extends DataObject
             $this->new = true;
         }
 		
-		
 		// XSS & SQLi prevention
 		$this->Comment = convert::html2raw( $this->Comment, true, 60 );
 
@@ -219,9 +218,21 @@ class GuestbookEntry extends DataObject
 			{
 				if( true == $arrParam[ 'comments' ] )
 				{
-					$objComments = $objEntryComments->getCommentsByEntryID( $entry[ 'ID' ], $arrParam[ 'sort' ] );
+					$objComments = $objEntryComments->getCommentsByEntryID(
+						$entry[ 'ID' ],
+						$arrParam[ 'sort' ]
+					);
+					
 					if( is_object( $objComments ) )
 					{
+						if( true == $arrParam[ 'emoticons' ] )
+						{
+							foreach( $objComments as $objComment ) 
+							{
+								$objComment->Comment = Guestbook::getReplaceEmoticons( $objComment->Comment );
+							}
+						}
+						
 						$entry[ 'EntryCommentList' ] = $objComments;
 					}
 					else

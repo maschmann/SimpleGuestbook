@@ -665,7 +665,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 			{
 				$objEntryCommentList = singleton( 'GuestbookEntryComment' );
 				$objResult = $objEntryCommentList->getCommentsByEntryID( $data[ 'EntryID' ] );
-
+			
 				$retVal = $this->customise( array(
 					'EntryCommentList' => $objResult,
 				) )->renderWith( 'Guestbook_entryComments' );

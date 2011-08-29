@@ -28,7 +28,7 @@ class GuestbookEntryComment extends DataObject
 	 */
 	static $db = array(
 		'Title'		=> 'Varchar(255)',	// title for the entry
-		'Comment'	=> 'Text',			// the actual entry
+		'Comment'	=> 'HTMLText',			// the actual entry
 	);
 
 	/**
