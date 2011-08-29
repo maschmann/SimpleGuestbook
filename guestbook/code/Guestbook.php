@@ -54,6 +54,7 @@ class Guestbook extends Page
 		'ShowEmail'				=> 'Boolean',
 		'ShowHomepage'			=> 'Boolean',
 		'ShowLastNameInEntries'	=> 'Boolean',
+		'SenderMailAddress' 	=> 'Varchar(255)',
 		'ReceiverMailAddress'	=> 'Varchar(255)',
 		'EnableSpamBlock'		=> 'Boolean',
 		'BlockedMailHosts'		=> 'Text', //needs to be that big
@@ -77,6 +78,7 @@ class Guestbook extends Page
 		'ShowEmail'				=> true,
 		'ShowHomepage'			=> true,
 		'ShowLastNameInEntries'	=> true,
+		'SenderMailAddress' 	=> '',
 		'ReceiverMailAddress'	=> '',
 		'EnableSpamBlock'		=> false,
 		'BlockedMailHosts'		=> 'mail.ru;gmail.com;yahoo.co.uk;hop.ru;zlocorp.com;chilotickr.com;sof-oem-bug.net;pimpmystick.com;dotandcomm.info;naclub.net',
@@ -163,7 +165,12 @@ class Guestbook extends Page
 			'ShowLastNameInEntries',
 			_t( 'Guestbook.SHOWLASTNAMEINENTRIES', 'Show "last name" in entries' )
 		);
-
+		
+		$senderMailaddress = new TextField(
+			'SenderMailAddress',
+			_t( 'Guestbook.SENDERMAILADDRESS', 'Where to send receipt mail for new entries' )
+		);
+		
 		$receiverMailaddress = new TextField(
 			'ReceiverMailAddress',
 			_t( 'Guestbook.RECEIVERMAILADDRESS', 'Where to send receipt mail for new entries' )
@@ -181,6 +188,7 @@ class Guestbook extends Page
 
 
 		$arrTabFields = array(
+			$senderMailaddress,
 			$receiverMailaddress,
 			$encryptMailField,
 			$needsActivationField,
@@ -415,7 +423,7 @@ class Guestbook extends Page
  * @author Marc Aschmann <marc (at) aschmann.org>
  *
  */
-class Guestbook_Controller extends Page_Controller
+class Guestbook_Controller extends Page_Controller implements PermissionProvider
 {
 
 	/**
@@ -460,6 +468,20 @@ class Guestbook_Controller extends Page_Controller
 		}
 
 	}
+	
+    /**
+     * provides permissions for the adminstration of the guestbook
+     * @return array
+     */
+    function providePermissions()
+    {
+        return array(
+            "GUESTBOOK_DELETEENTRY" => "User is allowed to delete comments",
+            "GUESTBOOK_DELETECOMMENT" => "User is allowed to delete sub-comments",
+            "GUESTBOOK_ADDCOMMENT" => "User is allowed to add sub-comments",
+            "GUESTBOOK_CHANGECOMMENTSTATE" => "User is allowed to mark items as spam or activate items",
+        );
+    }
 
 	/**
 	 * creates a new entry form
@@ -737,24 +759,24 @@ class Guestbook_Controller extends Page_Controller
 		switch ( $strType )
 		{
 			case 'deleteEntry':
-				if( true == Permission::checkMember( Member::currentUser(), 'ADMIN' ) )
+				if(Permission::check('GUESTBOOK_DELETEENTRY') != false)
 				{
 #					DataObject::delete_by_id( 'GuestbookEntry', Director::urlParam( 'ID' ) );
 					DataObject::delete_by_id( 'GuestbookEntry', Controller::curr()->urlParams['ID'] );
 					$objEntryComments = singleton( 'GuestbookEntryComment' );
 #					$objEntryComments->deleteCommentsByEntryID( Director::urlParam( 'ID' ) );
-					$objEntryComments->deleteCommentsByEntryID( Director::urlParam( 'ID' ) );
+					$objEntryComments->deleteCommentsByEntryID( Controller::curr()->urlParams['ID'] );
 				}
 				break;
 			case 'deleteComment':
-				if( true == Permission::checkMember( Member::currentUser(), 'ADMIN' ) )
+				if(Permission::check('GUESTBOOK_DELETECOMMENT') != false)
 				{
 #					DataObject::delete_by_id( 'GuestbookEntryComment', Director::urlParam( 'ID' ) );
 					DataObject::delete_by_id( 'GuestbookEntryComment', Controller::curr()->urlParams['ID'] );
 				}
 				break;
 			case 'addComment':
-				if( true == Permission::checkMember( Member::currentUser(), 'ADMIN' ) )
+				if(Permission::check('GUESTBOOK_ADDCOMMENT') != false)
 				{
 					$retVal = $this->customise( array(
 #						'EntryID' => Director::urlParam( 'ID' ),
@@ -764,7 +786,7 @@ class Guestbook_Controller extends Page_Controller
 				break;
 			case 'spam':
 			case 'activate':
-				if( true == Permission::checkMember( Member::currentUser(), 'ADMIN' ) )
+				if(Permission::check('GUESTBOOK_CHANGECOMMENTSTATE') != false)
 				{
 #					$entry = DataObject::get_by_id( 'GuestbookEntry', Director::urlParam( 'ID' ) );
 					$entry = DataObject::get_by_id( 'GuestbookEntry', Controller::curr()->urlParams['ID'] );
@@ -789,7 +811,8 @@ class Guestbook_Controller extends Page_Controller
 		}
 		else
 		{
-			Director::redirectBack();
+			// Director::redirectBack();
+      Controller::curr()->redirectBack();
 		}
 	}
 

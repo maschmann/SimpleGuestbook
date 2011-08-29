@@ -4,24 +4,23 @@
  *
  * @package guestbook
  * @author Marc Aschmann <marc (at) aschmann.org>
- * $Id: de_DE.php 96 2011-08-04 10:21:57Z maschmann $
+ * $Id: de_DE.php 87 2010-10-12 21:01:26Z maschmann $
  */
 
-i18n::include_locale_file( 'guestbook', 'de_DE' );
+i18n::include_locale_file( 'guestbook', 'en_US' );
 
 global $lang;
 
 if( array_key_exists( 'de_DE', $lang ) && is_array( $lang[ 'de_DE' ] ) )
 {
-	$lang[ 'de_DE' ] = array_merge( $lang[ 'de_DE' ], $lang[ 'de_DE' ] );
+	$lang[ 'de_DE' ] = array_merge( $lang[ 'en_US' ], $lang[ 'de_DE' ] );
 }
 else
 {
-	$lang[ 'de_DE' ] = $lang[ 'de_DE' ];
+	$lang[ 'de_DE' ] = $lang[ 'en_US' ];
 }
 
-$lang['de_DE']['Guestbook']['CAPTCHAMESSAGE'] = 'Captcha';
-$lang['de_DE']['Guestbook']['COMMENTADDED'] = 'Comment succesfully created!';
+$lang['de_DE']['Guestbook']['COMMENTADDED'] = 'Kommentar wurde angelegt!';
 $lang['de_DE']['Guestbook']['ENCRYPTMAIL'] = 'Mails verschlüsseln (benötigt Javascript)';
 $lang['de_DE']['Guestbook']['ENTER'] = 'Eintragen';
 $lang['de_DE']['Guestbook']['ENTRYADDED'] = 'Eintrag erfolgreich angelegt!';
@@ -36,6 +35,7 @@ $lang['de_DE']['Guestbook']['PLURALNAME'] = array(
 $lang['de_DE']['Guestbook']['RECAPTCHALANG'] = 'ReCaptcha sprache (nur aktiv wenn i18n nicht gesetzt ist!)';
 $lang['de_DE']['Guestbook']['RECAPTCHASTYLE'] = 'ReCaptcha Style';
 $lang['de_DE']['Guestbook']['SHOWPAGINATION'] = 'Paging anzeigen';
+$lang['de_DE']['Guestbook']['SENDERMAILADDRESS'] = 'Absenderadresse der Bestätigungsmail für neuen Eintrag (gesetzt == aktiviert!)';
 $lang['de_DE']['Guestbook']['RECEIVERMAILADDRESS'] = 'Bestätigungsmail(adresse) für neuen Eintrag (gesetzt == aktiviert!)';
 $lang['de_DE']['Guestbook']['SHOWEMAIL'] = 'Zeige "email" Feld im Formular';
 $lang['de_DE']['Guestbook']['SHOWHOMEPAGE'] = 'Zeige "homepage" Feld im Formular';
@@ -51,6 +51,7 @@ $lang['de_DE']['Guestbook']['SPAMPROTECTION'] = 'Welcher Spamschutz?';
 $lang['de_DE']['Guestbook']['SPAMQUESTION'] = 'Spamschutz Frage: %s';
 $lang['de_DE']['Guestbook']['TABNAME'] = 'Einträge';
 $lang['de_DE']['Guestbook']['TABNAMECONFIG'] = 'Config';
+$lang['de_DE']['Guestbook']['CaptchaMessage'] = 'Prüfziffer';
 $lang['de_DE']['Guestbook.ss']['COMMENTSTITLE'] = 'Kommentare:';
 $lang['de_DE']['Guestbook.ss']['DELCOMMENT'] = 'Kommentar löschen';
 $lang['de_DE']['Guestbook.ss']['DELENTRY'] = 'Eintrag löschen';
@@ -70,8 +71,9 @@ $lang['de_DE']['GuestbookEntry']['FIRSTNAME'] = 'Vorname';
 $lang['de_DE']['GuestbookEntry']['ISACTIVE'] = 'Ist aktiv?';
 $lang['de_DE']['GuestbookEntry']['ISSPAM'] = 'Ist Spam?';
 $lang['de_DE']['GuestbookEntry']['LASTNAME'] = 'Nachname';
-$lang['de_DE']['GuestbookEntry']['LINKTEXT'] = '#Eintrag';
-$lang['de_DE']['GuestbookEntry']['MAILSUBJECT'] = 'Neuer Gästebucheintrag :-)';
+$lang['de_DE']['GuestbookEntry']['LINKTEXT'] = 'Eintrag';
+$lang['de_DE']['GuestbookEntry']['MAILSUBJECT'] = 'Neuer Gaestebucheintrag :-)';
+$lang['de_DE']['GuestbookEntry']['MAILBODY'] = 'Auf %s wurde ein neuer Kommentar angelegt!';
 $lang['de_DE']['GuestbookEntry']['PLURALNAME'] = array(
 	'GuestbookEntries',
 	50,
