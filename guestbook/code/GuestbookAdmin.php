@@ -4,8 +4,6 @@
  *
  * @author Marc Aschmann <marc (at) aschmann.org>
  * @package guestbook
- * $Id: GuestbookAdmin.php 70 2010-06-03 13:01:15Z maschmann $
- *
  */
 
 /**

@@ -1,11 +1,8 @@
 <?php
 /**
  * standard config file
- *
  * @author Marc Aschmann <marc (at) aschmann.org>
  * @package guestbook
- * $Id: _config.php 96 2011-08-04 10:21:57Z maschmann $
- *
  */
 
 /**

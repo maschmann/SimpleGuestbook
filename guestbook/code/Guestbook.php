@@ -3,7 +3,6 @@
  * Guestbook
  * @author Marc Aschmann <marc (at) aschmann.org>
  * @package guestbook
- * $Id: Guestbook.php 97 2011-08-25 19:34:17Z maschmann $
  */
 
 /**
@@ -204,9 +203,7 @@ class Guestbook extends Page
 			$showEmoticonsField,
 		);
 
-		/**
-		 * if pagination is enabled, show limits
-		 */
+		// if pagination is enabled, show limits
 		if( 1 == (int)$this->ShowPagination )
 		{
 			$paginationLimitField = new DropdownField(
@@ -224,9 +221,7 @@ class Guestbook extends Page
 			$arrTabFields[] = $paginationLimitField;
 		}
 
-		/**
-		 * if we've got ReCaptcha enabled, we show styling options
-		 */
+		// if we've got ReCaptcha enabled, we show styling options
 		if( 'recaptcha' == $this->SpamProtection )
 		{
 			$ReCaptchaStyleField = new DropdownField(
@@ -419,9 +414,7 @@ class Guestbook extends Page
 
 /**
  * page controller
- *
  * @author Marc Aschmann <marc (at) aschmann.org>
- *
  */
 class Guestbook_Controller extends Page_Controller implements PermissionProvider
 {
@@ -429,7 +422,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 	/**
 	 * overwrites the global init() method
 	 * I just use it to add CSS styling and JS support
-	 *
 	 * @return void
 	 */
 	function init()
@@ -485,7 +477,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 	/**
 	 * creates a new entry form
-	 *mount -t vboxsf share /var/www/share/
 	 * @return object form
 	 */
 	public function Form()
@@ -493,9 +484,8 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		$fields = singleton( 'GuestbookEntry' )->getCMSFields();
 		if( is_object( $fields ) )
 		{
-			/**
-			 * remove "admin" fields
-			 */
+
+			 // remove "admin" fields
 			$fields->removeByName( 'IsActive' );
 			$fields->removeByName( 'IsSpam' );
 
@@ -541,8 +531,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 			$actions,
 			$validator
 		);
-#Debug::dump(SpamProtectorManager::get_spam_protector());
-#Debug::dump($this->SpamProtection);
+
 		// add spamprotection if enabled
 		if( ( 'recaptcha' == $this->SpamProtection
 				&& 'RecaptchaProtector' == SpamProtectorManager::get_spam_protector() )
@@ -552,7 +541,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 			    && 'PhpCaptchaProtector' == SpamProtectorManager::get_spam_protector() )
 			)
 		{
-#			SpamProtectorManager::update_form( $form, 'Captcha' );
 			SpamProtectorManager::update_form( $form, 'Captcha', array(), _t('Guestbook.CaptchaMessage', 'Captcha') );
 		}
 
@@ -587,7 +575,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 	/**
 	 * submit form data
-	 *
 	 * @param $data form data array
 	 * @param $form form object
 	 * @return void
@@ -611,15 +598,13 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 		$form->saveInto( $entry );
 
-		/**
-		 * entered values validation
-		 */
+		 // entered values validation
 		if( !$this->isValidMail( $entry->Email ) )
 		{
 			$entry->Email	= null;
 		}
 
-		$entry->Url			= $this->checkUrl( $entry->Url );
+		$entry->Url	= $this->checkUrl( $entry->Url );
 
 		// override some values
 		$entry->GuestbookID = $this->ID;
@@ -658,7 +643,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 	/**
 	 * submit form data
-	 *
 	 * @param $data form data array
 	 * @param $form form object
 	 * @return void
@@ -703,7 +687,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 	/**
 	 * generate a list of guestbook entries for the page
-	 *
 	 * @return dataObject
 	 */
 	public function EntryList()
@@ -748,7 +731,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 	/**
 	 * request handler, reacts on url params
-	 *
 	 * @return void
 	 */
 	public function doAction()
@@ -759,24 +741,21 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		switch ( $strType )
 		{
 			case 'deleteEntry':
-				if(Permission::check('GUESTBOOK_DELETEENTRY') != false)
+				if( Permission::check('GUESTBOOK_DELETEENTRY') != false )
 				{
-#					DataObject::delete_by_id( 'GuestbookEntry', Director::urlParam( 'ID' ) );
 					DataObject::delete_by_id( 'GuestbookEntry', Controller::curr()->urlParams['ID'] );
 					$objEntryComments = singleton( 'GuestbookEntryComment' );
-#					$objEntryComments->deleteCommentsByEntryID( Director::urlParam( 'ID' ) );
 					$objEntryComments->deleteCommentsByEntryID( Controller::curr()->urlParams['ID'] );
 				}
 				break;
 			case 'deleteComment':
-				if(Permission::check('GUESTBOOK_DELETECOMMENT') != false)
+				if( Permission::check('GUESTBOOK_DELETECOMMENT' ) != false )
 				{
-#					DataObject::delete_by_id( 'GuestbookEntryComment', Director::urlParam( 'ID' ) );
 					DataObject::delete_by_id( 'GuestbookEntryComment', Controller::curr()->urlParams['ID'] );
 				}
 				break;
 			case 'addComment':
-				if(Permission::check('GUESTBOOK_ADDCOMMENT') != false)
+				if( Permission::check('GUESTBOOK_ADDCOMMENT') != false )
 				{
 					$retVal = $this->customise( array(
 #						'EntryID' => Director::urlParam( 'ID' ),
@@ -786,9 +765,8 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 				break;
 			case 'spam':
 			case 'activate':
-				if(Permission::check('GUESTBOOK_CHANGECOMMENTSTATE') != false)
+				if( Permission::check('GUESTBOOK_CHANGECOMMENTSTATE') != false )
 				{
-#					$entry = DataObject::get_by_id( 'GuestbookEntry', Director::urlParam( 'ID' ) );
 					$entry = DataObject::get_by_id( 'GuestbookEntry', Controller::curr()->urlParams['ID'] );
 					if( $entry )
 					{
@@ -811,8 +789,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		}
 		else
 		{
-			// Director::redirectBack();
-      Controller::curr()->redirectBack();
+			Controller::curr()->redirectBack();
 		}
 	}
 
