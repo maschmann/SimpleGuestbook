@@ -2,7 +2,6 @@
 
 global $lang;
 
-$lang['de_DE']['Guestbook']['CAPTCHAMESSAGE'] = 'Captcha';
 $lang['en_US']['Guestbook']['COMMENTADDED'] = 'Comment succesfully created!';
 $lang['en_US']['Guestbook']['ENCRYPTMAIL'] = 'Encrypt eMail addresses (needs javascript)';
 $lang['en_US']['Guestbook']['ENTER'] = 'Enter';
@@ -17,6 +16,7 @@ $lang['en_US']['Guestbook']['PLURALNAME'] = array(
 );
 $lang['en_US']['Guestbook']['RECAPTCHALANG'] = 'ReCaptcha language (only works if i18n is not set!)';
 $lang['en_US']['Guestbook']['RECAPTCHASTYLE'] = 'ReCaptcha Style';
+$lang['de_DE']['Guestbook']['SENDERMAILADDRESS'] = 'Sender address of receipt mail for new entries (if set == enabled!)';
 $lang['en_US']['Guestbook']['RECEIVERMAILADDRESS'] = 'Where to send receipt mail for new entries (if set == enabled!)';
 $lang['en_US']['Guestbook']['SHOWEMAIL'] = 'Show "email" field in guestbook form';
 $lang['en_US']['Guestbook']['SHOWHOMEPAGE'] = 'Show "homepage" field in guestbook form';
@@ -32,6 +32,7 @@ $lang['en_US']['Guestbook']['SPAMPROTECTION'] = 'Which spamprotection?';
 $lang['en_US']['Guestbook']['SPAMQUESTION'] = 'Spam protection question: %s';
 $lang['en_US']['Guestbook']['TABNAME'] = 'Entries';
 $lang['en_US']['Guestbook']['TABNAMECONFIG'] = 'Config';
+$lang['en_US']['Guestbook']['CaptchaMessage'] = 'Captcha';
 $lang['en_US']['Guestbook.ss']['COMMENTSTITLE'] = 'comments:';
 $lang['en_US']['Guestbook.ss']['DELCOMMENT'] = 'delete comment';
 $lang['en_US']['Guestbook.ss']['DELENTRY'] = 'delete entry';
@@ -51,8 +52,9 @@ $lang['en_US']['GuestbookEntry']['FIRSTNAME'] = 'First Name';
 $lang['en_US']['GuestbookEntry']['ISACTIVE'] = 'Is activated?';
 $lang['en_US']['GuestbookEntry']['ISSPAM'] = 'Is Spam?';
 $lang['en_US']['GuestbookEntry']['LASTNAME'] = 'Last Name';
-$lang['en_US']['GuestbookEntry']['LINKTEXT'] = '#Entry';
+$lang['en_US']['GuestbookEntry']['LINKTEXT'] = 'Entry';
 $lang['en_US']['GuestbookEntry']['MAILSUBJECT'] = 'New guestbook entry :-)';
+$lang['en_US']['GuestbookEntry']['MAILBODY'] = 'You received a new guestbook entry on %s!';
 $lang['en_US']['GuestbookEntry']['PLURALNAME'] = array(
 	'GuestbookEntries',
 	50,
