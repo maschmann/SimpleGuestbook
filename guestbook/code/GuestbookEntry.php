@@ -137,6 +137,10 @@ class GuestbookEntry extends DataObject
         {
             $this->new = true;
         }
+		
+		
+		// XSS & SQLi prevention
+		$this->Comment = convert::html2raw( $this->Comment, true, 60 );
 
 		parent::onBeforeWrite();
 	}

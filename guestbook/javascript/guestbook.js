@@ -12,8 +12,6 @@ jQuery( document ).ready( function()
 	try
 	{
 		var objDialog = jQuery( '#popForm' ).dialog( {
-			//title: 'add comment',
-			//height: 318,
 			width: 350,
 			modal: true,
 			position: ['center', 'center'],
@@ -83,6 +81,6 @@ function reloadComments( intEntryID, strHref )
 	}
 	catch( e )
 	{
-		//console.log( 'reloadComments error: ' + e );
+		console.log( 'reloadComments error: ' + e );
 	}
 }

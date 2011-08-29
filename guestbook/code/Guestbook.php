@@ -663,7 +663,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 			if( Director::is_ajax() )
 			{
-				//$retVal = _t( 'Guestbook.COMMENTADDED', 'Comment succesfully created!' );
 				$objEntryCommentList = singleton( 'GuestbookEntryComment' );
 				$objResult = $objEntryCommentList->getCommentsByEntryID( $data[ 'EntryID' ] );
 
