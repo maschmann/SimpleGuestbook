@@ -41,9 +41,8 @@ maintenance release
 maintenance release
 - small fix for spamming with enabled ReCaptcha -> Custom domain filter
 
-1.0.4
-maintenance release
+1.1
+=> Thanks to s!m for the improvements
 - added PHPCaptcha
 - added URL fixes
 - added configurable smilies
-Thanks to s!m for the improvements
