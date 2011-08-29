@@ -35,11 +35,16 @@ Guestbook::setEmoticons( array(
 	';)'		=> 'wink',
 	':-D'		=> 'biggrin',
 	':D'		=> 'biggrin',
+	':P'		=> 'razz',
+	':-P'		=> 'razz',
+	'B)'		=> 'cool',
+	'B-)'		=> 'cool',
 	':rofl:'	=> 'lol',
 	':eek:'		=> 'eek',
 	':lol:'		=> 'lol',
 	':evil:'	=> 'evil',
 	':mad:'		=> 'mad',
+	':sad:'		=> 'sad',
 ) );
 
 ?>
