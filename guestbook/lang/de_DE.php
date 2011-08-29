@@ -1,10 +1,8 @@
 <?php
 /**
  * german (germany) language pack
- *
  * @package guestbook
  * @author Marc Aschmann <marc (at) aschmann.org>
- * $Id: de_DE.php 87 2010-10-12 21:01:26Z maschmann $
  */
 
 i18n::include_locale_file( 'guestbook', 'en_US' );
@@ -65,6 +63,7 @@ $lang['de_DE']['Guestbook.ss']['NOENTRIESYET'] = 'Noch keine Einträge';
 $lang['de_DE']['Guestbook.ss']['PREVIOUS'] = 'zurück';
 $lang['de_DE']['Guestbook.ss']['PREVIOUSPAGE'] = 'Vorherige Seite';
 $lang['de_DE']['Guestbook.ss']['VIEWPAGENO'] = 'Seite Nummer';
+$lang['de_DE']['Guestbook.ss']['SHOWSMILIESCODE'] = 'emoticon map';
 $lang['de_DE']['GuestbookEntry']['COMMENT'] = 'Kommentar';
 $lang['de_DE']['GuestbookEntry']['EMAIL'] = 'Email';
 $lang['de_DE']['GuestbookEntry']['FIRSTNAME'] = 'Vorname';

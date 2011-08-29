@@ -46,6 +46,7 @@ $lang['en_US']['Guestbook.ss']['NOENTRIESYET'] = 'no entries yet';
 $lang['en_US']['Guestbook.ss']['PREVIOUS'] = 'prev';
 $lang['en_US']['Guestbook.ss']['PREVIOUSPAGE'] = 'view the previous page';
 $lang['en_US']['Guestbook.ss']['VIEWPAGENO'] = 'view page number';
+$lang['en_US']['Guestbook.ss']['SHOWSMILIESCODE'] = 'emoticon map';
 $lang['en_US']['GuestbookEntry']['COMMENT'] = 'Comment';
 $lang['en_US']['GuestbookEntry']['EMAIL'] = 'Email';
 $lang['en_US']['GuestbookEntry']['FIRSTNAME'] = 'First Name';
