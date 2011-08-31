@@ -164,12 +164,12 @@ class Guestbook extends Page
 			'ShowLastNameInEntries',
 			_t( 'Guestbook.SHOWLASTNAMEINENTRIES', 'Show "last name" in entries' )
 		);
-		
+
 		$senderMailaddress = new TextField(
 			'SenderMailAddress',
-			_t( 'Guestbook.SENDERMAILADDRESS', 'Where to send receipt mail for new entries' )
+			_t( 'Guestbook.SENDERMAILADDRESS', 'Sender address of receipt mail for new entries (if set == enabled!)' )
 		);
-		
+
 		$receiverMailaddress = new TextField(
 			'ReceiverMailAddress',
 			_t( 'Guestbook.RECEIVERMAILADDRESS', 'Where to send receipt mail for new entries' )
@@ -460,7 +460,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		}
 
 	}
-	
+
     /**
      * provides permissions for the adminstration of the guestbook
      * @return array
@@ -665,7 +665,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 			{
 				$objEntryCommentList = singleton( 'GuestbookEntryComment' );
 				$objResult = $objEntryCommentList->getCommentsByEntryID( $data[ 'EntryID' ] );
-			
+
 				$retVal = $this->customise( array(
 					'EntryCommentList' => $objResult,
 				) )->renderWith( 'Guestbook_entryComments' );
@@ -765,7 +765,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 				// rearrange smilies array for template
 				foreach( Guestbook::getEmoticons()  as $strKey => $strValue )
 				{
-					$arrSmilies[] = array( 
+					$arrSmilies[] = array(
 						'Img'	=> $strValue,
 						'Code'	=> $strKey,
 					);
