@@ -132,12 +132,12 @@ class GuestbookEntry extends DataObject
 		{
 			$this->AuthorID = $currentMember->ID;
 		}
-		
+
 		if( !$this->getField( 'ID' ) )
         {
             $this->new = true;
         }
-		
+
 		// XSS & SQLi prevention
 		$this->Comment = convert::html2raw( $this->Comment, true, 60 );
 
@@ -222,17 +222,17 @@ class GuestbookEntry extends DataObject
 						$entry[ 'ID' ],
 						$arrParam[ 'sort' ]
 					);
-					
+
 					if( is_object( $objComments ) )
 					{
 						if( true == $arrParam[ 'emoticons' ] )
 						{
-							foreach( $objComments as $objComment ) 
+							foreach( $objComments as $objComment )
 							{
 								$objComment->Comment = Guestbook::getReplaceEmoticons( $objComment->Comment );
 							}
 						}
-						
+
 						$entry[ 'EntryCommentList' ] = $objComments;
 					}
 					else
@@ -373,20 +373,19 @@ class GuestbookEntry extends DataObject
 	{
 		return $this->canEdit( $member );
 	}
-	
+
     /**
      * Checks, if the current user has the permission $perm, used in templates
      * @param string $perm
      * @return bool
      */
-    public function checkPermission( $perm )
-    {
-        if( Permission::check( $perm ) != false )
-        {
-            return true;
-        }
-        return false;
-    }
+	public function checkPermission( $perm )
+	{
+		if( Permission::check( $perm ) != false )
+		{
+			return true;
+		}
+		return false;
+	}
 
 }
-?>

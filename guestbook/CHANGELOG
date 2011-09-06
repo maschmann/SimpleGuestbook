@@ -46,3 +46,9 @@ maintenance release
 - added PHPCaptcha
 - added URL fixes
 - added configurable smilies
+
+1.2
+Changes from Git
+
+[major] fixed styles, added some CSS3 for the better browsers
+[minor] fixed config for ppl without PHPCaptcha module

@@ -37,6 +37,14 @@ class Guestbook extends Page
 	static $plural_name = 'Guestbooks';
 
 	/**
+	 * allowed actions
+	 * @var array
+	 */
+	static $allowed_actions = array(
+		'doAction',
+	);
+
+	/**
 	 * properties for entries
 	 * @var array
 	 */
@@ -443,7 +451,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		Requirements::css( THIRDPARTY_DIR . '/jquery-ui-themes/base/jquery.ui.all.css' );
 
 		// Add guestbook module js support
-		Requirements::javascript( 'guestbook/javascript/guestbook.js');
+		Requirements::javascript( 'guestbook/javascript/guestbook.js' );
 
 		// check if there's an overriding css file
 		Requirements::css( 'guestbook/css/guestbook.css' );
@@ -537,11 +545,11 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 				&& 'RecaptchaProtector' == SpamProtectorManager::get_spam_protector() )
 			|| ( 'simplestspam' == $this->SpamProtection
 				&& 'SimplestSpamProtector' == SpamProtectorManager::get_spam_protector() )
-			||('phpcaptcha' == $this->SpamProtection
+			||( 'phpcaptcha' == $this->SpamProtection
 			    && 'PhpCaptchaProtector' == SpamProtectorManager::get_spam_protector() )
 			)
 		{
-			SpamProtectorManager::update_form( $form, 'Captcha', array(), _t('Guestbook.CaptchaMessage', 'Captcha') );
+			SpamProtectorManager::update_form( $form, 'Captcha', array(), _t( 'Guestbook.CaptchaMessage', 'Captcha' ) );
 		}
 
 		return $form;
@@ -696,10 +704,10 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		if( 1 === ( int )$this->ShowPagination )
 		{
 			if( !isset( $_GET[ 'start' ] )
-				|| !is_numeric( $_GET['start'] )
+				|| !is_numeric( $_GET[ 'start' ] )
 				|| ( int )$_GET[ 'start' ] < 1)
 			{
-				$_GET['start'] = 0;
+				$_GET[ 'start' ] = 0;
 			}
 
 			// set standard pagination value if none is set
@@ -710,7 +718,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 				$this->PaginationLimit = 25;
 			}
 
-			$limit_start = ( int )$_GET['start'];
+			$limit_start = ( int )$_GET[ 'start' ];
 			$limit_end = $this->PaginationLimit;
 		}
 
@@ -740,24 +748,24 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		switch ( $strType )
 		{
 			case 'deleteEntry':
-				if( Permission::check('GUESTBOOK_DELETEENTRY') != false )
+				if( Permission::check( 'GUESTBOOK_DELETEENTRY' ) != false )
 				{
-					DataObject::delete_by_id( 'GuestbookEntry', Controller::curr()->urlParams['ID'] );
+					DataObject::delete_by_id( 'GuestbookEntry', Controller::curr()->urlParams[ 'ID' ] );
 					$objEntryComments = singleton( 'GuestbookEntryComment' );
-					$objEntryComments->deleteCommentsByEntryID( Controller::curr()->urlParams['ID'] );
+					$objEntryComments->deleteCommentsByEntryID( Controller::curr()->urlParams[ 'ID' ] );
 				}
 				break;
 			case 'deleteComment':
-				if( Permission::check('GUESTBOOK_DELETECOMMENT' ) != false )
+				if( Permission::check( 'GUESTBOOK_DELETECOMMENT' ) != false )
 				{
-					DataObject::delete_by_id( 'GuestbookEntryComment', Controller::curr()->urlParams['ID'] );
+					DataObject::delete_by_id( 'GuestbookEntryComment', Controller::curr()->urlParams[ 'ID' ] );
 				}
 				break;
 			case 'addComment':
-				if( Permission::check('GUESTBOOK_ADDCOMMENT') != false )
+				if( Permission::check( 'GUESTBOOK_ADDCOMMENT' ) != false )
 				{
 					$retVal = $this->customise( array(
-						'EntryID' => Controller::curr()->urlParams['ID'],
+						'EntryID' => Controller::curr()->urlParams[ 'ID' ],
 					) )->renderWith( 'Guestbook_addComment' );
 				}
 				break;
@@ -777,9 +785,9 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 				break;
 			case 'spam':
 			case 'activate':
-				if( Permission::check('GUESTBOOK_CHANGECOMMENTSTATE') != false )
+				if( Permission::check( 'GUESTBOOK_CHANGECOMMENTSTATE' ) != false )
 				{
-					$entry = DataObject::get_by_id( 'GuestbookEntry', Controller::curr()->urlParams['ID'] );
+					$entry = DataObject::get_by_id( 'GuestbookEntry', Controller::curr()->urlParams[ 'ID' ] );
 					if( $entry )
 					{
 						if( 'spam' == $strType )
@@ -803,11 +811,12 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		{
 			Controller::curr()->redirectBack();
 		}
+
+		return false;
 	}
 
 	/**
 	 * create spam protection config javascript
-	 *
 	 * @return type string
 	 */
 	public function SpamProtectionOptions()
@@ -909,7 +918,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 	/**
 	 * Check if text contains hyperlinks
-	 *
 	 * @param string $strText
 	 * @param boolean $blnCaseSensitive
 	 * @return boolean
@@ -981,7 +989,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 	/**
 	 * check if current logged in user is an admin
-	 *
 	 * @return boolean
 	 */
 	public function isAdmin()
@@ -1000,7 +1007,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 	/**
 	 * wraps logged in user check
 	 * don't know why this does not work...
-	 *
 	 * @return boolean
 	 */
 	public function CurrentUser()
@@ -1009,4 +1015,3 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 	}
 
 }
-?>

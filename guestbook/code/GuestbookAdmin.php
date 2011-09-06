@@ -30,5 +30,3 @@ class GuestbookAdmin extends ModelAdmin
 	static $url_segment = 'Guestbook';
 
 }
-
-?>

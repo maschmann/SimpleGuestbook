@@ -23,6 +23,16 @@ i18n::set_locale('en_US');
  */
 MathSpamProtection::setEnabled();
 
+/**
+ * add new smilies like this:
+ *
+ * array(
+ *	'<smilie_code>' => '<smilie_name>',
+ * )
+ *
+ * add new images to: /img/emoticons/
+ * filename: <smilie_name>.gif
+  */
 Guestbook::setEmoticons( array(
 	':-)'		=> 'smile',
 	':)'		=> 'smile',
