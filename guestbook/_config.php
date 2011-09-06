@@ -11,7 +11,7 @@
  */
 //SpamProtectorManager::set_spam_protector("RecaptchaProtector");
 //SpamProtectorManager::set_spam_protector("SimplestSpamProtector");
-SpamProtectorManager::set_spam_protector("PHPCaptchaProtector");
+//SpamProtectorManager::set_spam_protector("PHPCaptchaProtector");
 
 /**
  * enable translations
