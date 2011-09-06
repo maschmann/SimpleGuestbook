@@ -5,6 +5,8 @@
  * @package guestbook
  */
 
+document.createElement( 'section' ); /* HTML5 fix for IE */
+
 jQuery.noConflict();
 
 jQuery( document ).ready( function()
