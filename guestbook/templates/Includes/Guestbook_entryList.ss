@@ -6,12 +6,12 @@
 				<% if Top.EncryptEmail %>
 					<% _t('Guestbook.ss.FROM', 'from') %> $MailLink
 					<% if Url %>&nbsp;<a href="$Url.XML" class="homepageLink" title="<% _t('Guestbook.ss.HOMEPAGE', 'website') %>">(<% _t('Guestbook.ss.HOMEPAGE', 'website') %>)</a><% end_if %>
-					/ $Created.format( Y-m-d H:m )
+					/ $Created.format( Y-m-d H:i )
 				<% else %>
 					<% _t('Guestbook.ss.FROM', 'from') %> $FirstName.XML
 					<% if LastName %><% if Top.ShowLastNameInEntries %> $LastName.XML<% end_if %><% end_if %>
 					<% if Url %>&nbsp;<a href="$Url.XML" class="homepageLink" title="<% _t('Guestbook.ss.HOMEPAGE', 'website') %>">(<% _t('Guestbook.ss.HOMEPAGE', 'website') %>)</a><% end_if %>
-					/ $Created.format( Y-m-d H:m )
+					/ $Created.format( Y-m-d H:i )
 				<% end_if %>
 				</p>
 				<% if Top.CurrentUser %>

@@ -8,7 +8,7 @@
 						<li class="$EvenOdd $FirstLast">
 							<h5>$Title.XML</h5>
 							<p>$Comment</p>
-							<p class="smallText name"><% _t('Guestbook.ss.FROM', 'from') %> $FirstName.XML<% if Top.ShowLastNameInEntries %> $Surname.XML<% end_if %> / $Created.format( Y-m-d H:m )</p>
+							<p class="smallText name"><% _t('Guestbook.ss.FROM', 'from') %> $FirstName.XML<% if Top.ShowLastNameInEntries %> $Surname.XML<% end_if %> / $Created.format( Y-m-d H:i )</p>
 							<% if Top.CurrentUser %>
 							<p class="smallText entryTools">
 							<% if checkPermission(GUESTBOOK_DELETECOMMENT) %>
