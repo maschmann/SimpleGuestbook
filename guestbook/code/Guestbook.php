@@ -412,11 +412,9 @@ class Guestbook extends Page
 			$arrResult[] = '/* ]]> */';
 			$arrResult[] = '</script>';
 			$arrResult[] = '<noscript>Sorry, you need javascript to view this email address</noscript>';
-
-			$retVal = implode( "\n", $arrResult );
 		}
 
-		return $retVal;
+		return implode( "\n", $arrResult );
 	}
 
 }
@@ -477,10 +475,10 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
     function providePermissions()
     {
         return array(
-            "GUESTBOOK_DELETEENTRY" => "User is allowed to delete comments",
-            "GUESTBOOK_DELETECOMMENT" => "User is allowed to delete sub-comments",
-            "GUESTBOOK_ADDCOMMENT" => "User is allowed to add sub-comments",
-            "GUESTBOOK_CHANGECOMMENTSTATE" => "User is allowed to mark items as spam or activate items",
+            "GUESTBOOK_DELETEENTRY"			=> "User is allowed to delete comments",
+            "GUESTBOOK_DELETECOMMENT"		=> "User is allowed to delete sub-comments",
+            "GUESTBOOK_ADDCOMMENT"			=> "User is allowed to add sub-comments",
+            "GUESTBOOK_CHANGECOMMENTSTATE"	=> "User is allowed to mark items as spam or activate items",
         );
     }
 
@@ -493,7 +491,6 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		$fields = singleton( 'GuestbookEntry' )->getCMSFields();
 		if( is_object( $fields ) )
 		{
-
 			 // remove "admin" fields
 			$fields->removeByName( 'IsActive' );
 			$fields->removeByName( 'IsSpam' );
@@ -517,7 +514,8 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 			}
 
 			if( MathSpamProtection::isEnabled()
-				&& 'mathspam' == $this->SpamProtection )
+				&& 'mathspam' == $this->SpamProtection
+				)
 			{
 				$fields->push( new TextField( 'Math',
 						sprintf( _t( 'Guestbook.SPAMQUESTION', "Spam protection question: %s" ), MathSpamProtection::getMathQuestion() )
@@ -543,13 +541,17 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
 		// add spamprotection if enabled
 		if( ( 'recaptcha' == $this->SpamProtection
-				&& 'RecaptchaProtector' == SpamProtectorManager::get_spam_protector() )
+				&& 'RecaptchaProtector' == SpamProtectorManager::get_spam_protector()
+				)
 			|| ( 'mollom' == $this->SpamProtection
-				&& 'MollomSpamProtector' == SpamProtectorManager::get_spam_protector() )
+				&& 'MollomSpamProtector' == SpamProtectorManager::get_spam_protector()
+				)
 			|| ( 'simplestspam' == $this->SpamProtection
-				&& 'SimplestSpamProtector' == SpamProtectorManager::get_spam_protector() )
+				&& 'SimplestSpamProtector' == SpamProtectorManager::get_spam_protector()
+				)
 			||( 'phpcaptcha' == $this->SpamProtection
-			    && 'PhpCaptchaProtector' == SpamProtectorManager::get_spam_protector() )
+			    && 'PhpCaptchaProtector' == SpamProtectorManager::get_spam_protector()
+				)
 			)
 		{
 			SpamProtectorManager::update_form( $form, 'Captcha', array(), _t( 'Guestbook.CaptchaMessage', 'Captcha' ) );
@@ -701,42 +703,49 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 	 */
 	public function EntryList()
 	{
-		// pagination stuff
-		$limit_start	= '';
-		$limit_end		= '';
+		$limit_start	= 0;
+		$limit_end		= 25;
+
+		//check if pagination is set via post or get: get tops post
+		if( isset( $_GET[ 'start' ] )
+				&& is_numeric( $_GET[ 'start' ] )
+			)
+		{
+			$limit_start = (int)$_GET[ 'start' ];
+		}
+		elseif( isset( $_POST[ 'start' ] )
+				&& is_numeric( $_GET[ 'start' ] )
+			)
+		{
+			$limit_start = (int)$_POST[ 'start' ];
+		}
+
 		if( 1 === ( int )$this->ShowPagination )
 		{
-			if( !isset( $_GET[ 'start' ] )
-				|| !is_numeric( $_GET[ 'start' ] )
-				|| ( int )$_GET[ 'start' ] < 1)
-			{
-				$_GET[ 'start' ] = 0;
-			}
-
 			// set standard pagination value if none is set
-			if( !isset( $this->PaginationLimit )
-				|| !is_numeric( $this->PaginationLimit )
-				|| 0 == $this->PaginationLimit )
+			if( isset( $this->PaginationLimit )
+				&& is_numeric( $this->PaginationLimit )
+					&& 0 != $this->PaginationLimit
+				)
 			{
-				$this->PaginationLimit = 25;
+				$limit_end = $this->PaginationLimit;
 			}
-
-			$limit_start = ( int )$_GET[ 'start' ];
-			$limit_end = $this->PaginationLimit;
 		}
 
 		// now get the entries and comments
-		$arrParam = array();
-		$arrParam[ 'filter' ]		= 'IsActive = 1 AND IsSpam = 0 AND GuestbookID =' . $this->ID;
-		$arrParam[ 'sort' ]			= 'Created DESC';
-		$arrParam[ 'limit_start' ]	= $limit_start;
-		$arrParam[ 'limit_end' ]	= $limit_end;
-		$arrParam[ 'comments' ]		= $this->EntryComments;
-		$arrParam[ 'cryptmail' ]	= $this->EncryptEmail;
-		$arrParam[ 'emoticons' ]	= $this->ShowEmoticons;
 		$objGuestbookEntries = singleton( 'GuestbookEntry' );
 
-		return $objGuestbookEntries->getEntryList( $arrParam );
+		return $objGuestbookEntries->getEntryList(
+			array(
+				'filter'		=> 'IsActive = 1 AND IsSpam = 0 AND GuestbookID =' . $this->ID,
+				'sort'			=> 'Created DESC',
+				'limit_start'	=> $limit_start,
+				'limit_end'		=> $limit_end,
+				'comments'		=> $this->EntryComments,
+				'cryptmail'		=> $this->EncryptEmail,
+				'emoticons'		=> $this->ShowEmoticons,
+			)
+		);
 	}
 
 	/**
