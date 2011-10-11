@@ -142,9 +142,9 @@ class GuestbookEntryComment extends DataObject
    * @param string $perm
    * @return bool
    */
-	public function checkPermission($perm)
+	public function checkPermission( $perm )
 	{
-		if(Permission::check($perm) != false)
+		if( Permission::check( $perm ) != false )
 		{
 			return true;
 		}
