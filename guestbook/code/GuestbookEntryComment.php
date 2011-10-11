@@ -60,7 +60,6 @@ class GuestbookEntryComment extends DataObject
 		$fields = new FieldSet(
 			new TextField( 'Title', _t( 'GuestbookEntry.TITLE', 'Title' ) ),
 			new TextareaField( 'Comment', _t( 'GuestbookEntry.COMMENT', 'Comment' ) ),
-#			new HiddenField( 'EntryID', '', Director::urlParam( 'ID' ) )
 			new HiddenField( 'EntryID', '', Controller::curr()->urlParams['ID'] )
 		);
 
@@ -108,8 +107,8 @@ class GuestbookEntryComment extends DataObject
 				);
 			$sqlQuery->from = array(
 					'GuestbookEntryComment GC',
-					'LEFT JOIN ( Member M )',
-					'ON ( M.ID = GC.AuthorID )',
+					'LEFT JOIN Member M',
+					'ON M.ID = GC.AuthorID',
 				);
 			$sqlQuery->where = array(
 					'GC.GuestbookEntryID = ' . (int)$intEntryID,
