@@ -142,6 +142,7 @@ class Guestbook extends Page
 			array(
 				null			=> '-',
 				'recaptcha'		=> 'ReCaptcha',
+				'mollom'		=> 'MollomSpamProtector',
 				'phpcaptcha'	=> 'PHPCaptcha',
 				'simplestspam'	=> 'SimplestSpam',
 				'mathspam'		=> 'MathSpamProtection',
@@ -543,6 +544,8 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 		// add spamprotection if enabled
 		if( ( 'recaptcha' == $this->SpamProtection
 				&& 'RecaptchaProtector' == SpamProtectorManager::get_spam_protector() )
+			|| ( 'mollom' == $this->SpamProtection
+				&& 'MollomSpamProtector' == SpamProtectorManager::get_spam_protector() )
 			|| ( 'simplestspam' == $this->SpamProtection
 				&& 'SimplestSpamProtector' == SpamProtectorManager::get_spam_protector() )
 			||( 'phpcaptcha' == $this->SpamProtection
