@@ -1,6 +1,5 @@
 /**
  * main javascript file
- *
  * @author Marc Aschmann <marc (at) aschmann.org>
  * @package guestbook
  */
@@ -38,7 +37,6 @@ jQuery( document ).ready( function()
  * inits a form onClick action with jQuery ajax
  * it's a bit more generic as it needs to be: I'll update
  * the whole guestbook to use ajax soon
- *
  * @param string strFormName
  * @return void
  */
@@ -46,17 +44,18 @@ function initForm( strFormName, intEntryID )
 {
 	try
 	{
+		var strTarget = '';
 		switch ( strFormName ) {
 			case 'CommentForm':
-				var strTarget = '.entryComments_' + intEntryID;
+				strTarget = '.entryComments_' + intEntryID;
 				break;
 			default:
-				var strTarget = '#FormMessage';
+				strTarget = '#FormMessage';
 				break;
 		}
 
 		var options = {
-				target: strTarget
+			target: strTarget
 		};
 
 		// bind to the form's submit event
@@ -75,6 +74,11 @@ function initForm( strFormName, intEntryID )
 	}
 }
 
+/**
+ * as it says: reloads comments for a given entry
+ * @param integer intEntryID
+ * @param string strHref
+ */
 function reloadComments( intEntryID, strHref )
 {
 	try
@@ -84,5 +88,20 @@ function reloadComments( intEntryID, strHref )
 	catch( e )
 	{
 		console.log( 'reloadComments error: ' + e );
+	}
+}
+
+/**
+ * refresh the complete entries element, including all comments
+ */
+function reloadEntries()
+{
+	try
+	{
+		// nothing yet
+	}
+	catch( e )
+	{
+		console.log( 'reloadEntries error: ' + e );
 	}
 }

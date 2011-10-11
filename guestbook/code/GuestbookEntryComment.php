@@ -1,7 +1,6 @@
 <?php
 /**
  * GuestbookEntryComment
- *
  * @author Marc Aschmann <marc (at) aschmann.org>
  * @package guestbook
  */
@@ -10,14 +9,12 @@ class GuestbookEntryComment extends DataObject
 {
 	/**
 	 * name of the object in singular
-	 *
 	 * @var string
 	 */
 	static $singular_name = 'GuestbookEntryComment';
 
 	/**
-	 * name of the object in singular
-	 *
+	 * name of the object in singular	 *
 	 * @var string
 	 */
 	static $plural_name = 'GuestbookEntryComments';
@@ -52,7 +49,6 @@ class GuestbookEntryComment extends DataObject
 
 	/**
 	 * definition of form fields
-	 *
 	 * @return obj FieldSet
 	 */
 	public function getCMSFields()
@@ -68,7 +64,6 @@ class GuestbookEntryComment extends DataObject
 
 	/**
 	 * hooks writing the dataset and inserts the member ID
-	 *
 	 * @return void
 	 */
 	public function onBeforeWrite()
@@ -85,7 +80,6 @@ class GuestbookEntryComment extends DataObject
 
 	/**
 	 * gets all comments for an entry
-	 *
 	 * @param integer $intEntryID
 	 * @return DataObjectSet
 	 */
@@ -120,8 +114,7 @@ class GuestbookEntryComment extends DataObject
 	}
 
 	/**
-	 * deletes all comments for an entry
-	 *
+	 * deletes all comments for an entry	 
 	 * @param integer $intEntryID
 	 * @return void
 	 */
@@ -138,10 +131,10 @@ class GuestbookEntryComment extends DataObject
 	}
 
 	/**
-   * Checks, if the current user has the permission $perm, used in templates
-   * @param string $perm
-   * @return bool
-   */
+	 * Checks, if the current user has the permission $perm, used in templates
+	 * @param string $perm
+	 * @return bool
+	 */
 	public function checkPermission( $perm )
 	{
 		if( Permission::check( $perm ) != false )

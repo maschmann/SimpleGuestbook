@@ -96,7 +96,7 @@ class GuestbookEntry extends DataObject
 	 * @var array
 	 */
 	static $has_many = array(
-		'GuestbookEntryComments'	=> 'GuestbookEntryComment',
+		'GuestbookEntryComments' => 'GuestbookEntryComment',
 	);
 
 	/**

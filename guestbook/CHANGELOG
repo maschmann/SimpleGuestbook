@@ -52,3 +52,12 @@ Changes from Git
 
 [major] fixed styles, added some CSS3 for the better browsers
 [minor] fixed config for ppl without PHPCaptcha module
+
+2.0
+major release: Ajax capabilities and redesign
+
+[minor] fixed SQL error on IIS systems
+[minor] added Mollom spam protection
+[minor] fixed template $Created.format() time format
+[minor] fixed config for ppl withoug PHPCaptcha module
+[major] fixed styles, added some CSS3 for the better browsers

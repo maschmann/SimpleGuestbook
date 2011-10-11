@@ -783,7 +783,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 				break;
 			case 'showSmilies':
 				// rearrange smilies array for template
-				foreach( Guestbook::getEmoticons()  as $strKey => $strValue )
+				foreach( Guestbook::getEmoticons() as $strKey => $strValue )
 				{
 					$arrSmilies[] = array(
 						'Img'	=> $strValue,
