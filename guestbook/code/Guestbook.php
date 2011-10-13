@@ -368,8 +368,7 @@ class Guestbook extends Page
 			$strLastName	= Convert::raw2xml( strip_tags( $arrParam[ 'LastName' ] ) );
 		}
 		$strUserName	= $strFirstname . ' ' . $strLastName;
-		$arrResult		= array();
-		$retVal			= $strUserName;
+		$arrResult		= array( $strUserName );
 
 		if( array_key_exists( 'Email', $arrParam )
 			&& null != $arrParam[ 'Email' ]
