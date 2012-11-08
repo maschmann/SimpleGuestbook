@@ -23,19 +23,19 @@ class GuestbookEntry extends DataObject
      * name of the object in singular
      * @var string
      */
-    static $singular_name = 'GuestbookEntry';
+    public static $singular_name = 'GuestbookEntry';
 
     /**
      * name of the object in singular
      * @var string
      */
-    static $plural_name = 'GuestbookEntries';
+    public static $plural_name = 'GuestbookEntries';
 
     /**
      * database column definitions
      * @var array
      */
-    static $db = array(
+    public static $db = array(
         'FirstName' => 'Varchar(50)',
         'LastName'  => 'Varchar(50)',
         'Email'     => 'Varchar(255)',
@@ -51,7 +51,7 @@ class GuestbookEntry extends DataObject
      * default values for database fields
      * @var array
      */
-    static $defaults = array(
+    public static $defaults = array(
         'AuthorID' => null
     );
 
@@ -60,7 +60,7 @@ class GuestbookEntry extends DataObject
      * since this is backend we don't need any restrictions yet
      * @var static array
      */
-    static $searchable_fields = array(
+    public static $searchable_fields = array(
         'FirstName',
         'LastName',
         'Email',
@@ -75,7 +75,7 @@ class GuestbookEntry extends DataObject
      * fields for model admin search results
      * @var array
      */
-    static $summary_fields = array(
+    public static $summary_fields = array(
         'FirstName',
         'LastName',
         'Title',
@@ -87,7 +87,7 @@ class GuestbookEntry extends DataObject
      * database has_one relation
      * @var array
      */
-    static $has_one = array(
+    public static $has_one = array(
         'Guestbook' => 'Guestbook',
     );
 
@@ -95,7 +95,7 @@ class GuestbookEntry extends DataObject
      * message 1:n relations
      * @var array
      */
-    static $has_many = array(
+    public static $has_many = array(
         'GuestbookEntryComments' => 'GuestbookEntryComment',
     );
 
@@ -143,7 +143,7 @@ class GuestbookEntry extends DataObject
     public function onBeforeWrite()
     {
 
-        $currentMember = Member::currentMember();
+        $currentMember = Member::currentUser();
         if( true == $currentMember ) {
             $this->AuthorID = $currentMember->ID;
         }
@@ -231,8 +231,8 @@ class GuestbookEntry extends DataObject
              * get all entries, add comments if available & enabled,
              * work on values like link protection and smilies
              */
-            $objEntryComments   = singleton( 'GuestbookEntryComment' );
-            $objEntries         = GuestbookEntry::get()
+            $objEntryComments = singleton( 'GuestbookEntryComment' );
+            $objEntries       = GuestbookEntry::get()
                 ->filter( array( $arrParam[ 'filter' ] ) )
                 ->sort( $arrParam[ 'sort' ] );
 
@@ -270,42 +270,31 @@ class GuestbookEntry extends DataObject
                     $objEntry->Comment = Guestbook::getReplaceEmoticons( $entry[ 'Comment' ] );
                 }
 
-                $retVal[] = $objEntry;
+                $retVal[ ] = $objEntry;
             }
 
-            $objArrayList = new ArrayList( $retVal );
+            $objPagerList = new PaginatedList( new ArrayList( $retVal ) );
 
             if( true == array_key_exists( 'limit_end', $arrParam )
                 && is_numeric( $arrParam[ 'limit_end' ] )
-                && is_object( $objArrayList )
+                && is_object( $objPagerList )
             ) {
                 /**
                  * reverse-engineered pagination behaviour
                  */
-                $intCount = $objArrayList->TotalItems();
+                $intCount = $objPagerList->count();
 
-                $objArrayList->setPageLimits(
-                    $arrParam[ 'limit_start' ],
+                $objPagerList->setPageStart( $arrParam[ 'limit_start' ] );
+                $objPagerList->setPageLength( $arrParam[ 'limit_end' ] );
+                $objPagerList->setTotalItems( $intCount );
+
+                $objPagerList->limit(
                     $arrParam[ 'limit_end' ],
-                    $intCount
-                );
-
-                $objSet = $objArrayList->getRange(
-                    $arrParam[ 'limit_start' ],
-                    $arrParam[ 'limit_end' ]
-                );
-
-                $objSet->setPageLimits(
-                    $arrParam[ 'limit_start' ],
-                    $arrParam[ 'limit_end' ],
-                    $intCount
+                    $arrParam[ 'limit_start' ]
                 );
             }
-            else {
-                $objSet = & $objArrayList;
-            }
 
-            return $objSet;
+            return $objPagerList;
         }
     }
 

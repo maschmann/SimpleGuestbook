@@ -827,10 +827,10 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
             $retVal[ ] = '<script type="text/javascript">';
             $retVal[ ] = '/* <![CDATA[ */';
-            $retVal[ ] = '	var RecaptchaOptions = {';
-            $retVal[ ] = '		theme : \'' . $this->ReCaptchaStyle . '\',';
-            $retVal[ ] = '		lang : \'' . $strLang . '\'';
-            $retVal[ ] = '	};';
+            $retVal[ ] = '  var RecaptchaOptions = {';
+            $retVal[ ] = '      theme : \'' . $this->ReCaptchaStyle . '\',';
+            $retVal[ ] = '      lang : \'' . $strLang . '\'';
+            $retVal[ ] = '  };';
             $retVal[ ] = '/* ]]> */';
             $retVal[ ] = '</script>';
 
@@ -850,9 +850,9 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
     {
         $retVal = false;
         if( preg_match( "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $strEmail ) ) {
-            list( $username, $strDomain ) = split( '@', $strEmail );
+            $arrMail = explode( '@', $strEmail );
 
-            if( checkdnsrr( $strDomain, 'MX' ) ) {
+            if( checkdnsrr( $arrMail[ 1 ], 'MX' ) ) {
                 $retVal = true;
             }
         }
@@ -864,6 +864,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
     /**
      * check if submitted mail address is in blocked hosts list
      * @param string $strEmail
+     * @return bool
      */
     private function isBlockedHost( $strEmail )
     {

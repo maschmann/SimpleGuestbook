@@ -14,20 +14,20 @@ class GuestbookEntryComment extends DataObject
      *
      * @var string
      */
-    static $singular_name = 'GuestbookEntryComment';
+    public static $singular_name = 'GuestbookEntryComment';
 
     /**
      * name of the object in singular
      *
      * @var string
      */
-    static $plural_name = 'GuestbookEntryComments';
+    public static $plural_name = 'GuestbookEntryComments';
 
     /**
      * database column definitions
      * @var array
      */
-    static $db = array(
+    public static $db = array(
         'Title'   => 'Varchar(255)',
         // title for the entry
         'Comment' => 'HTMLText',
@@ -38,7 +38,7 @@ class GuestbookEntryComment extends DataObject
      * attribute relations
      * @var array
      */
-    static $has_one = array(
+    public static $has_one = array(
         'GuestbookEntry' => 'GuestbookEntry',
         'Author'         => 'Member',
     );
@@ -47,7 +47,7 @@ class GuestbookEntryComment extends DataObject
      * fields for model admin search results
      * @var array
      */
-    static $summary_fields = array(
+    public static $summary_fields = array(
         'Title',
         'Comment',
         'AuthorID',
@@ -61,7 +61,7 @@ class GuestbookEntryComment extends DataObject
      */
     public function getCMSFields()
     {
-        $fields = new FieldSet(
+        $fields = new FieldList(
             new TextField( 'Title', _t( 'GuestbookEntry.TITLE', 'Title' ) ),
             new TextareaField( 'Comment', _t( 'GuestbookEntry.COMMENT', 'Comment' ) ),
             new HiddenField( 'EntryID', '', Controller::curr()->urlParams[ 'ID' ] )
@@ -79,9 +79,9 @@ class GuestbookEntryComment extends DataObject
     public function onBeforeWrite()
     {
 
-        $currentMember = Member::currentMember();
-        if( true == $currentMember ) {
-            $this->AuthorID = $currentMember->ID;
+        $currentUserId = Member::currentUserID();
+        if( 0 < $currentUserId ) {
+            $this->AuthorID = $currentUserId;
         }
 
         parent::onBeforeWrite();
@@ -91,14 +91,14 @@ class GuestbookEntryComment extends DataObject
     /**
      * gets all comments for an entry
      *
-     * @param integer $intEntryID
+     * @param integer $intEntryId
      * @param string $orderBy
      * @return DataObjectSet
      */
-    public function getCommentsByEntryID( $intEntryID, $orderBy = 'Created DESC' )
+    public function getCommentsByEntryID( $intEntryId, $orderBy = 'Created DESC' )
     {
-        if( is_numeric( $intEntryID ) ) {
-            $sqlQuery         = new SQLQuery();
+        if( is_numeric( $intEntryId ) ) {
+        /*    $sqlQuery         = new SQLQuery();
             $sqlQuery->select = array(
                 'GC.ID',
                 'GC.Created',
@@ -116,11 +116,12 @@ class GuestbookEntryComment extends DataObject
                 'ON ( M.ID = GC.AuthorID )',
             );
             $sqlQuery->where  = array(
-                'GC.GuestbookEntryID = ' . (int)$intEntryID,
+                'GC.GuestbookEntryID = ' . (int)$intEntryId,
             );
             $sqlQuery->orderby( $orderBy );
 
-            return $this->buildDataObjectSet( $sqlQuery->execute() );
+            return $this->buildDataObjectSet( $sqlQuery->execute() );*/
+
         }
     }
 
@@ -128,16 +129,16 @@ class GuestbookEntryComment extends DataObject
     /**
      * deletes all comments for an entry
      *
-     * @param integer $intEntryID
+     * @param integer $intEntryId
      * @return void
      */
-    public function deleteCommentsByEntryID( $intEntryID )
+    public function deleteCommentsByEntryID( $intEntryId )
     {
-        if( is_numeric( $intEntryID ) ) {
+        if( is_numeric( $intEntryId ) ) {
             $sqlQuery         = new SQLQuery();
             $sqlQuery->delete = true;
             $sqlQuery->from   = array( 'GuestbookEntryComment' );
-            $sqlQuery->where  = array( 'GuestbookEntryID=' . (int)$intEntryID );
+            $sqlQuery->where  = array( 'GuestbookEntryID=' . (int)$intEntryId );
             $sqlQuery->execute();
         }
     }
