@@ -64,7 +64,6 @@ class GuestbookEntryComment extends DataObject
         $fields = new FieldSet(
             new TextField( 'Title', _t( 'GuestbookEntry.TITLE', 'Title' ) ),
             new TextareaField( 'Comment', _t( 'GuestbookEntry.COMMENT', 'Comment' ) ),
-#			new HiddenField( 'EntryID', '', Director::urlParam( 'ID' ) )
             new HiddenField( 'EntryID', '', Controller::curr()->urlParams[ 'ID' ] )
         );
 
@@ -93,6 +92,7 @@ class GuestbookEntryComment extends DataObject
      * gets all comments for an entry
      *
      * @param integer $intEntryID
+     * @param string $orderBy
      * @return DataObjectSet
      */
     public function getCommentsByEntryID( $intEntryID, $orderBy = 'Created DESC' )

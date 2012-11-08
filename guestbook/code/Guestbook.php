@@ -257,20 +257,11 @@ class Guestbook extends Page
 
         $fields->addFieldsToTab( 'Root.Content.' . _t( 'Guestbook.TABNAMECONFIG', 'Config' ), $arrTabFields );
 
-        $entriesTable = new DataObjectManager(
-            $this, // controller object
-            'GuestbookEntries', // fieldname
-            'GuestbookEntry', // dataObject class
-            array( // fields for overview
-                 'FirstName' => _t( 'GuestbookEntry.FIRSTNAME', 'First Name' ),
-                 'LastName'  => _t( 'GuestbookEntry.LASTNAME', 'Last Name' ),
-                 'Email'     => _t( 'GuestbookEntry.EMAIL', 'Email' ),
-                 'Title'     => _t( 'GuestbookEntry.TITLE', 'Title' ),
-                 'Comment'   => _t( 'GuestbookEntry.COMMENT', 'Comment' ),
-                 'IsSpam'    => _t( 'GuestbookEntry.ISSPAM', 'Is Spam?' ),
-                 'IsActive'  => _t( 'GuestbookEntry.ISACTIVE', 'Is activated?' ),
-            ),
-            'getCMSFields' // fields for popup
+        $entriesTable = new GridField(
+            'GuestbookEntries',
+            null,
+            GuestbookEntry::get(),
+            GridFieldConfig_RelationEditor::create()
         );
 
         $fields->addFieldsToTab( 'Root.Content.' . _t( 'Guestbook.TABNAME', 'Entries' ), array( $entriesTable ) );
@@ -389,17 +380,17 @@ class Guestbook extends Page
             $strMailIndexes = str_replace( "\\", "\\\\", $strMailIndexes );
             $strMailIndexes = str_replace( "\"", "\\\"", $strMailIndexes );
 
-            $arrResult[ ] = '<script type="text/javascript">';
-            $arrResult[ ] = '/* <![CDATA[ */';
-            $arrResult[ ] = '	ML="' . $strMailLettersEnc . '";';
-            $arrResult[ ] = '	MI="' . $strMailIndexes . '";';
-            $arrResult[ ] = '	OT="";';
-            $arrResult[ ] = '	for(j=0;j<MI.length;j++){';
-            $arrResult[ ] = '	OT+=ML.charAt(MI.charCodeAt(j)-48);';
-            $arrResult[ ] = '	}document.write(OT);';
-            $arrResult[ ] = '/* ]]> */';
-            $arrResult[ ] = '</script>';
-            $arrResult[ ] = '<noscript>Sorry, you need javascript to view this email address</noscript>';
+            $arrResult[] = '<script type="text/javascript">';
+            $arrResult[] = '/* <![CDATA[ */';
+            $arrResult[] = '	ML="' . $strMailLettersEnc . '";';
+            $arrResult[] = '	MI="' . $strMailIndexes . '";';
+            $arrResult[] = '	OT="";';
+            $arrResult[] = '	for(j=0;j<MI.length;j++){';
+            $arrResult[] = '	OT+=ML.charAt(MI.charCodeAt(j)-48);';
+            $arrResult[] = '	}document.write(OT);';
+            $arrResult[] = '/* ]]> */';
+            $arrResult[] = '</script>';
+            $arrResult[] = '<noscript>Sorry, you need javascript to view this email address</noscript>';
 
             $retVal = implode( "\n", $arrResult );
         }
@@ -502,7 +493,8 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
                 $fields->removeByName( 'Url' );
             }
 
-            if( MathSpamProtection::isEnabled()
+            if( class_exists( 'MathSpamProtection' )
+                && MathSpamProtection::isEnabled()
                 && 'mathspam' == $this->SpamProtection
             ) {
                 $fields->push(
@@ -516,7 +508,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
             }
         }
 
-        $actions   = new FieldSet(
+        $actions   = new FieldList(
             new FormAction( 'doSubmitEntry', _t( 'Guestbook.ENTER', 'Enter' ) )
         );
         $validator = new RequiredFields(
@@ -555,7 +547,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
     {
         $fields = singleton( 'GuestbookEntryComment' )->getCMSFields();
 
-        $actions   = new FieldSet(
+        $actions   = new FieldList(
             new FormAction( 'doSubmitComment', _t( 'Guestbook.ENTER', 'Enter' ) )
         );
         $validator = new RequiredFields(

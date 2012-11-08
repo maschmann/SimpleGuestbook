@@ -37,23 +37,14 @@ class GuestbookEntry extends DataObject
      */
     static $db = array(
         'FirstName' => 'Varchar(50)',
-        // poster's first name
         'LastName'  => 'Varchar(50)',
-        // poster's last name
         'Email'     => 'Varchar(255)',
-        // poster's mail address
         'Title'     => 'Varchar(255)',
-        // title for the entry
         'Comment'   => 'HTMLText',
-        // the actual entry
         'Url'       => 'Varchar(255)',
-        // an URL set by the poster
         'IsSpam'    => 'Boolean',
-        // spamflag
         'IsActive'  => 'Boolean',
-        // if set active
         'AuthorID'  => 'Int(11)',
-        // ID of user, if logged in
     );
 
     /**
@@ -116,21 +107,29 @@ class GuestbookEntry extends DataObject
      */
     public function getCMSFields()
     {
-        $fields = new FieldSet(
+        $fields = new FieldList(
             new TextField( 'FirstName', _t( 'GuestbookEntry.FIRSTNAME', 'First Name' ) ),
             new TextField( 'LastName', _t( 'GuestbookEntry.LASTNAME', 'Last Name' ) ),
             new EmailField( 'Email', _t( 'GuestbookEntry.EMAIL', 'Email' ) ),
             new TextField( 'Title', _t( 'GuestbookEntry.TITLE', 'Title' ) ),
             new TextareaField( 'Comment', _t( 'GuestbookEntry.COMMENT', 'Comment' ) ),
             new TextField( 'Url', _t( 'GuestbookEntry.URL', 'Homepage' ) ),
-            new DropdownField( 'IsSpam', _t( 'GuestbookEntry.ISSPAM', 'Is Spam?' ), array(
-                                                                                         0 => 'no',
-                                                                                         1 => 'yes'
-                                                                                    ) ),
-            new DropdownField( 'IsActive', _t( 'GuestbookEntry.ISACTIVE', 'Is activated?' ), array(
-                                                                                                  1 => 'yes',
-                                                                                                  0 => 'no'
-                                                                                             ) )
+            new DropdownField(
+                'IsSpam',
+                _t( 'GuestbookEntry.ISSPAM', 'Is Spam?' ),
+                array(
+                     0 => 'no',
+                     1 => 'yes'
+                )
+            ),
+            new DropdownField(
+                'IsActive',
+                _t( 'GuestbookEntry.ISACTIVE', 'Is activated?' ),
+                array(
+                     1 => 'yes',
+                     0 => 'no'
+                )
+            )
         );
 
         return $fields;
@@ -228,23 +227,19 @@ class GuestbookEntry extends DataObject
                 $limit = $arrParam[ 'limit_start' ] . ',' . $arrParam[ 'limit_end' ];
             }
 
-            $sqlQuery          = new SQLQuery();
-            $sqlQuery->select  = array( '*' );
-            $sqlQuery->from    = array( 'GuestbookEntry' );
-            $sqlQuery->where   = array( $arrParam[ 'filter' ] );
-            $sqlQuery->orderby = $arrParam[ 'sort' ];
-
             /**
              * get all entries, add comments if available & enabled,
              * work on values like link protection and smilies
              */
-            $objEntryComments = singleton( 'GuestbookEntryComment' );
-            $arrEntries       = $sqlQuery->execute();
+            $objEntryComments   = singleton( 'GuestbookEntryComment' );
+            $objEntries         = GuestbookEntry::get()
+                ->filter( array( $arrParam[ 'filter' ] ) )
+                ->sort( $arrParam[ 'sort' ] );
 
-            foreach( $arrEntries as $entry ) {
+            foreach( $objEntries as $objEntry ) {
                 if( true == $arrParam[ 'comments' ] ) {
                     $objComments = $objEntryComments->getCommentsByEntryID(
-                        $entry[ 'ID' ],
+                        $objEntry->ID,
                         $arrParam[ 'sort' ]
                     );
 
@@ -255,14 +250,14 @@ class GuestbookEntry extends DataObject
                             }
                         }
 
-                        $entry[ 'EntryCommentList' ] = $objComments;
+                        $objEntry->EntryCommentList = $objComments;
                     }
                     else {
                         /**
                          * workaround for ss 2.4x where the isValue()
                          * doesn't work with nested controls/DataObjectSets
                          */
-                        $entry[ 'EntryCommentList' ] = false;
+                        $objEntry->EntryCommentList = false;
                     }
                 }
 
@@ -271,31 +266,31 @@ class GuestbookEntry extends DataObject
                 }
 
                 if( true == $arrParam[ 'emoticons' ] ) {
-                    #BBCodeParser::enable_smilies();
-                    $entry[ 'Comment' ] = Guestbook::getReplaceEmoticons( $entry[ 'Comment' ] );
+                    //BBCodeParser::enable_smilies();
+                    $objEntry->Comment = Guestbook::getReplaceEmoticons( $entry[ 'Comment' ] );
                 }
 
-                $retVal[ ] = $entry;
+                $retVal[] = $objEntry;
             }
 
-            $objDataObjectSet = $this->buildDataObjectSet( $retVal );
+            $objArrayList = new ArrayList( $retVal );
 
             if( true == array_key_exists( 'limit_end', $arrParam )
                 && is_numeric( $arrParam[ 'limit_end' ] )
-                && is_object( $objDataObjectSet )
+                && is_object( $objArrayList )
             ) {
                 /**
                  * reverse-engineered pagination behaviour
                  */
-                $intCount = $objDataObjectSet->TotalItems();
+                $intCount = $objArrayList->TotalItems();
 
-                $objDataObjectSet->setPageLimits(
+                $objArrayList->setPageLimits(
                     $arrParam[ 'limit_start' ],
                     $arrParam[ 'limit_end' ],
                     $intCount
                 );
 
-                $objSet = $objDataObjectSet->getRange(
+                $objSet = $objArrayList->getRange(
                     $arrParam[ 'limit_start' ],
                     $arrParam[ 'limit_end' ]
                 );
@@ -307,7 +302,7 @@ class GuestbookEntry extends DataObject
                 );
             }
             else {
-                $objSet = & $objDataObjectSet;
+                $objSet = & $objArrayList;
             }
 
             return $objSet;
