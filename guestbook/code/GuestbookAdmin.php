@@ -10,7 +10,7 @@
  * guestbookAdmin class
  *
  * @author Marc Aschmann <marc (at) aschmann.org>
- *
+ * @package \Guestbook\Admin
  */
 class GuestbookAdmin extends ModelAdmin
 {
@@ -31,5 +31,3 @@ class GuestbookAdmin extends ModelAdmin
     static $url_segment = 'Guestbook';
 
 }
-
-?>

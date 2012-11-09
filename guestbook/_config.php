@@ -21,7 +21,7 @@ i18n::set_locale('en_US');
 /**
  * enable spam Protection
  */
-#MathSpamProtection::setEnabled();
+//MathSpamProtection::setEnabled();
 
 Guestbook::setEmoticons( array(
 	':-)'		=> 'smile',
@@ -43,5 +43,3 @@ Guestbook::setEmoticons( array(
 	':mad:'		=> 'mad',
 	':sad:'		=> 'sad',
 ) );
-
-?>

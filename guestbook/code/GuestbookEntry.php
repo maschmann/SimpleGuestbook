@@ -217,6 +217,7 @@ class GuestbookEntry extends DataObject
      */
     function getEntryList( $arrParam )
     {
+
         if( is_array( $arrParam ) ) {
             $retVal = array();
 
@@ -235,8 +236,11 @@ class GuestbookEntry extends DataObject
             $objEntries       = GuestbookEntry::get()
                 ->filter( array( $arrParam[ 'filter' ] ) )
                 ->sort( $arrParam[ 'sort' ] );
+            echo '<br>--  ( ' . __FILE__ . ' ) ( ' . __LINE__ . ' ) --<br /><pre>' . print_r( $objEntries->sql(), true ) . '</pre>';
+            echo '<br>--  ( ' . __FILE__ . ' ) ( ' . __LINE__ . ' ) --<br /><pre>' . print_r( $objEntries->createDataObject(), true ) . '</pre>';
 
             foreach( $objEntries as $objEntry ) {
+                echo '<br>--  ( ' . __FILE__ . ' ) ( ' . __LINE__ . ' ) --<br /><pre>' . print_r( $objEntry->ID, true ) . '</pre>';
                 if( true == $arrParam[ 'comments' ] ) {
                     $objComments = $objEntryComments->getCommentsByEntryID(
                         $objEntry->ID,
@@ -262,12 +266,12 @@ class GuestbookEntry extends DataObject
                 }
 
                 if( true == $arrParam[ 'cryptmail' ] ) {
-                    $entry[ 'MailLink' ] = $entry[ 'MailLink' ] = Guestbook::getEmailLink( $entry );
+                    $objEntry->MailLink = Guestbook::getEmailLink( $objEntry );
                 }
 
                 if( true == $arrParam[ 'emoticons' ] ) {
                     //BBCodeParser::enable_smilies();
-                    $objEntry->Comment = Guestbook::getReplaceEmoticons( $entry[ 'Comment' ] );
+                    $objEntry->Comment = Guestbook::getReplaceEmoticons( $objEntry->Comment );
                 }
 
                 $retVal[ ] = $objEntry;
@@ -294,7 +298,7 @@ class GuestbookEntry extends DataObject
                 );
             }
 
-            return $objPagerList;
+            //return $objPagerList;
         }
     }
 
@@ -396,5 +400,3 @@ class GuestbookEntry extends DataObject
     }
 
 }
-
-?>

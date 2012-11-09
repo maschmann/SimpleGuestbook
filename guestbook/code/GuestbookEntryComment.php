@@ -3,9 +3,8 @@
  * GuestbookEntryComment
  *
  * @author Marc Aschmann <marc (at) aschmann.org>
- * @package guestbook
+ * @package \Guestbook\Model
  */
-
 class GuestbookEntryComment extends DataObject
 {
 
@@ -16,6 +15,7 @@ class GuestbookEntryComment extends DataObject
      */
     public static $singular_name = 'GuestbookEntryComment';
 
+
     /**
      * name of the object in singular
      *
@@ -23,19 +23,21 @@ class GuestbookEntryComment extends DataObject
      */
     public static $plural_name = 'GuestbookEntryComments';
 
+
     /**
      * database column definitions
+     *
      * @var array
      */
     public static $db = array(
         'Title'   => 'Varchar(255)',
-        // title for the entry
         'Comment' => 'HTMLText',
-        // the actual entry
     );
+
 
     /**
      * attribute relations
+     *
      * @var array
      */
     public static $has_one = array(
@@ -43,8 +45,10 @@ class GuestbookEntryComment extends DataObject
         'Author'         => 'Member',
     );
 
+
     /**
      * fields for model admin search results
+     *
      * @var array
      */
     public static $summary_fields = array(
@@ -97,32 +101,10 @@ class GuestbookEntryComment extends DataObject
      */
     public function getCommentsByEntryID( $intEntryId, $orderBy = 'Created DESC' )
     {
-        if( is_numeric( $intEntryId ) ) {
-        /*    $sqlQuery         = new SQLQuery();
-            $sqlQuery->select = array(
-                'GC.ID',
-                'GC.Created',
-                'GC.Title',
-                'GC.Comment',
-                'M.FirstName',
-                'M.Surname',
-                'M.Email',
-                'GC.ClassName AS ClassName',
-                'GC.ClassName AS RecordClassName',
-            );
-            $sqlQuery->from   = array(
-                'GuestbookEntryComment GC',
-                'LEFT JOIN ( Member M )',
-                'ON ( M.ID = GC.AuthorID )',
-            );
-            $sqlQuery->where  = array(
-                'GC.GuestbookEntryID = ' . (int)$intEntryId,
-            );
-            $sqlQuery->orderby( $orderBy );
-
-            return $this->buildDataObjectSet( $sqlQuery->execute() );*/
-
-        }
+        return GuestbookEntryComment::get()
+            ->leftJoin( 'Member', 'Member.ID = GuestbookEntryComment.AuthorID' )
+            ->where( 'GuestbookEntryComment.GuestbookEntryID = ' . (int)$intEntryId )
+            ->sort( $orderBy );
     }
 
 
@@ -146,6 +128,7 @@ class GuestbookEntryComment extends DataObject
 
     /**
      * Checks, if the current user has the permission $perm, used in templates
+     *
      * @param string $perm
      * @return bool
      */

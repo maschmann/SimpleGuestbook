@@ -1,46 +1,52 @@
 <?php
-/**
- * Guestbook
- * @author Marc Aschmann <marc (at) aschmann.org>
- * @package guestbook
- */
 
 /**
  * Guestbook model
+ *
  * @author Marc Aschmann <marc (at) aschmann.org>
+ * @package \Guestbook\Model
  */
 class Guestbook extends Page
 {
 
     /**
      * page icon
+     *
      * @var string
      */
-    static $icon = "/guestbook/img/icons/guestbook";
+    public static $icon = "/guestbook/img/icons/guestbook";
+
 
     /**
      * array of allowed subelements
+     *
      * @var array
      */
-    static $allowed_children = array();
+    public static $allowed_children = array();
+
 
     /**
      * name of the page in singular
+     *
      * @var string
      */
-    static $singular_name = 'Guestbook';
+    public static $singular_name = 'Guestbook';
+
 
     /**
      * name of the page in plural
+     *
      * @var string
      */
-    static $plural_name = 'Guestbooks';
+    public static $plural_name = 'Guestbooks';
+
 
     /**
      * properties for entries
+     *
      * @var array
      */
-    static $db = array(
+    public static $db = array(
         'EncryptEmail'          => 'Boolean',
         'NeedsActivation'       => 'Boolean',
         'ShowPagination'        => 'Boolean',
@@ -61,11 +67,13 @@ class Guestbook extends Page
         'ShowEmoticons'         => 'Boolean',
     );
 
+
     /**
      * default values for entries
+     *
      * @var array
      */
-    static $defaults = array(
+    public static $defaults = array(
         'EncryptEmail'          => true,
         'NeedsActivation'       => false,
         'ShowPagination'        => true,
@@ -85,24 +93,28 @@ class Guestbook extends Page
         'ShowEmoticons'         => false,
     );
 
+
     /**
      * 1:n database relation
+     *
      * @var array
      */
-    static $has_many = array(
+    public static $has_many = array(
         'GuestbookEntries' => 'GuestbookEntry',
     );
 
+
     /**
      * emoticons for guestbook
+     *
      * @var array
      */
-    static $arrEmoticons = array();
+    public static $arrEmoticons = array();
 
 
     /**
      * retrieve the entries for current category
-     * @param void
+     *
      * @return object Fieldset
      */
     public function getCMSFields()
@@ -255,7 +267,7 @@ class Guestbook extends Page
             $arrTabFields[ ] = $ReCaptchaLangField;
         }
 
-        $fields->addFieldsToTab( 'Root.Content.' . _t( 'Guestbook.TABNAMECONFIG', 'Config' ), $arrTabFields );
+        $fields->addFieldsToTab( 'Root.' . _t( 'Guestbook.TABNAMECONFIG', 'Config' ), $arrTabFields );
 
         $entriesTable = new GridField(
             'GuestbookEntries',
@@ -264,7 +276,7 @@ class Guestbook extends Page
             GridFieldConfig_RelationEditor::create()
         );
 
-        $fields->addFieldsToTab( 'Root.Content.' . _t( 'Guestbook.TABNAME', 'Entries' ), array( $entriesTable ) );
+        $fields->addFieldsToTab( 'Root.' . _t( 'Guestbook.TABNAME', 'Entries' ), array( $entriesTable ) );
 
         return $fields;
     }
@@ -272,6 +284,7 @@ class Guestbook extends Page
 
     /**
      * set emoticon codes and aliases as static array for later use
+     *
      * @param type array
      * @return void
      */
@@ -288,6 +301,7 @@ class Guestbook extends Page
 
     /**
      * get defined emoticon array
+     *
      * @return type array
      */
     public static function getEmoticons()
@@ -298,6 +312,7 @@ class Guestbook extends Page
 
     /**
      * replace emoticons in entry
+     *
      * @param type string
      * @return type string
      */
@@ -336,7 +351,7 @@ class Guestbook extends Page
      *        'ShowLastNameInEntries' => boolean
      * );
      *
-     * @param array arrParam
+     * @param array $arrParam
      * @return string complete mail link with javascript
      */
     public static function getEmailLink( $arrParam = array() )
@@ -382,12 +397,12 @@ class Guestbook extends Page
 
             $arrResult[] = '<script type="text/javascript">';
             $arrResult[] = '/* <![CDATA[ */';
-            $arrResult[] = '	ML="' . $strMailLettersEnc . '";';
-            $arrResult[] = '	MI="' . $strMailIndexes . '";';
-            $arrResult[] = '	OT="";';
-            $arrResult[] = '	for(j=0;j<MI.length;j++){';
-            $arrResult[] = '	OT+=ML.charAt(MI.charCodeAt(j)-48);';
-            $arrResult[] = '	}document.write(OT);';
+            $arrResult[] = '    ML="' . $strMailLettersEnc . '";';
+            $arrResult[] = '    MI="' . $strMailIndexes . '";';
+            $arrResult[] = '    OT="";';
+            $arrResult[] = '    for(j=0;j<MI.length;j++){';
+            $arrResult[] = '    OT+=ML.charAt(MI.charCodeAt(j)-48);';
+            $arrResult[] = '    }document.write(OT);';
             $arrResult[] = '/* ]]> */';
             $arrResult[] = '</script>';
             $arrResult[] = '<noscript>Sorry, you need javascript to view this email address</noscript>';
@@ -403,7 +418,9 @@ class Guestbook extends Page
 
 /**
  * page controller
+ *
  * @author Marc Aschmann <marc (at) aschmann.org>
+ * @package \Guestbook\Controller
  */
 class Guestbook_Controller extends Page_Controller implements PermissionProvider
 {
@@ -411,6 +428,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
     /**
      * overwrites the global init() method
      * I just use it to add CSS styling and JS support
+     *
      * @return void
      */
     function init()
@@ -452,6 +470,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
     /**
      * provides permissions for the adminstration of the guestbook
+     *
      * @return array
      */
     function providePermissions()
@@ -467,6 +486,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
     /**
      * creates a new entry form
+     *
      * @return object form
      */
     public function Form()
@@ -541,7 +561,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
     /**
      * creates a new entry comment form
      *
-     * @return form object
+     * @return object form
      */
     public function commentForm()
     {
@@ -567,9 +587,9 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
     /**
      * submit form data
+     *
      * @param $data form data array
      * @param $form form object
-     * @return void
      */
     public function doSubmitEntry( $data, $form )
     {
@@ -634,9 +654,10 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
     /**
      * submit form data
-     * @param $data form data array
-     * @param $form form object
-     * @return void
+     *
+     * @param array $data form data array
+     * @param object $form form object
+     * @return string
      */
     public function doSubmitComment( $data, $form )
     {
@@ -677,6 +698,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
     /**
      * generate a list of guestbook entries for the page
+     *
      * @return dataObject
      */
     public function EntryList()
@@ -714,14 +736,13 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
         $arrParam[ 'cryptmail' ]   = $this->EncryptEmail;
         $arrParam[ 'emoticons' ]   = $this->ShowEmoticons;
         $objGuestbookEntries       = singleton( 'GuestbookEntry' );
-
         return $objGuestbookEntries->getEntryList( $arrParam );
+        //return GuestbookEntry::get()->
     }
 
 
     /**
      * request handler, reacts on url params
-     * @return void
      */
     public function doAction()
     {
@@ -761,7 +782,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
                 $retVal = $this->customise(
                     array(
-                         'smiliesMap' => new DataObjectSet( $arrSmilies ),
+                         'smiliesMap' => new DataList( $arrSmilies ),
                     )
                 )->renderWith( 'Guestbook_showSmilies' );
                 break;
@@ -863,6 +884,7 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
 
     /**
      * check if submitted mail address is in blocked hosts list
+     *
      * @param string $strEmail
      * @return bool
      */
@@ -987,5 +1009,3 @@ class Guestbook_Controller extends Page_Controller implements PermissionProvider
     }
 
 }
-
-?>
